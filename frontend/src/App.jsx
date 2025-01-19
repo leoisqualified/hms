@@ -8,6 +8,7 @@ import MyProfile from "./pages/MyProfile";
 import MyAppointments from "./pages/MyAppointments";
 import Doctors from "./pages/Doctors";
 import Contact from "./pages/Contact";
+import Appointment from "./pages/Appointment";
 import Navbar from "./components/Navbar";
 
 // App.jsx
@@ -25,7 +26,7 @@ const App = () => {
         <Route path="/doctors" element={<Doctors />} />
         <Route path="/doctors/:speciality" element={<Doctors />} />
         <Route path="/contact" element={<Contact />} />
-        <Route path="/appoitment/:docId" element={<Contact />} />
+        <Route path="/appointment/:docId" element={<Appointment />} />
       </Routes>
     </div>
   );
