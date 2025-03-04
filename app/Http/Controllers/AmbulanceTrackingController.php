@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\AmbulanceTracking;
+use App\Http\Requests\StoreAmbulanceTrackingRequest;
 
 class AmbulanceTrackingController extends Controller
 {
@@ -11,23 +13,24 @@ class AmbulanceTrackingController extends Controller
      */
     public function index()
     {
-        //
+        return response()->json(AmbulanceTracking::with(['patient','appointment'])->get());
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreAmbulanceTrackingRequest $request)
     {
-        //
+        $ambulance = AmbulanceTracking::create($request->validated());
+        return response()->json($ambulance, 201);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(AmbulanceTracking $ambulance)
     {
-        //
+        return response()->json($ambulance->load(['patient', 'doctor']));
     }
 
     /**
@@ -35,7 +38,8 @@ class AmbulanceTrackingController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $appointment->update($request->validated());
+        return response()->json($appointment);
     }
 
     /**

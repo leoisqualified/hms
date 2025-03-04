@@ -22,7 +22,10 @@ class StorePrescriptionRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'patient_id' => 'required|exists:patients,id',
+            'doctor_id' => 'required|exists:doctors,id',
+            'medications' => 'required|string',
+            'dosage' => 'required|string',
         ];
     }
 }

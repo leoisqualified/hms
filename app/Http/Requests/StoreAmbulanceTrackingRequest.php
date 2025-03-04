@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreBillingRequest extends FormRequest
+class StoreAmbulanceTrackingRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,8 +23,9 @@ class StoreBillingRequest extends FormRequest
     {
         return [
             'patient_id' => 'required|exists:patients,id',
-            'amount_due' => 'required|numeric|min:0',
-            'status' => 'required|in:pending,paid,canceled',
+            'ambulance_number' => 'required|string|unique:ambulance_tracking,ambulance_number',
+            'latitude' => 'required|numeric',
+            'longitude' => 'required|numeric',
         ];
     }
 }

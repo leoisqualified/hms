@@ -22,7 +22,14 @@ class StoreEHRRequest extends FormRequest
     public function rules(): array
     {
         return [
-            
+            'patient_id' => 'required|exists:patients,id',
+            'doctor_id' => 'required|exists:doctors,id',
+            'diagnosis' => 'required|string',
+            'allergies' => 'nullable|string',
+            'medications' => 'nullable|string',
+            'medical_history' => 'nullable|string',
+            'lab_results' => 'nullable|json',
+            'radiology_reports' => 'nullable|json',
         ];
     }
 }

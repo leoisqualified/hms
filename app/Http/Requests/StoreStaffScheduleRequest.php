@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreBillingRequest extends FormRequest
+class StoreStaffScheduleRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,9 +22,9 @@ class StoreBillingRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'patient_id' => 'required|exists:patients,id',
-            'amount_due' => 'required|numeric|min:0',
-            'status' => 'required|in:pending,paid,canceled',
+            'user_id' => 'required|exists:users,id',
+            'shift_start' => 'required|date_format:Y-m-d H:i:s|after_or_equal:now',
+            'shift_end' => 'required|date_format:Y-m-d H:i:s|after:shift_start',
         ];
     }
 }

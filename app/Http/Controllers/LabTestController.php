@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Models\LabTest;
+use App\Http\Requests\StoreLabTestRequest;
+use App\Http\Requests\UpdateLabTestRequest;
 
 class LabTestController extends Controller
 {
@@ -11,38 +13,41 @@ class LabTestController extends Controller
      */
     public function index()
     {
-        //
+        return response()->json(LabTest::with(['patient','appointment'])->get());
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(UpdateLabTestRequest $request)
     {
-        //
+        $labTest = LabTest::create($request->validated());
+        return response()->json($labTest, 201);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(LabTest $labTest)
     {
-        //
+        return response()->json($labTest->load(['patient', 'doctor']));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(StoreLabTestRequest $request, LabTest $labTest)
     {
-        //
+        $labTest->update($request->validated());
+        return response()->json($labTest);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(LabTest $labTest)
     {
-        //
+        $labTest->delete();
+        return response()->json(null, 204);
     }
 }
