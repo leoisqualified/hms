@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\AmbulanceTracking;
 use App\Http\Requests\StoreAmbulanceTrackingRequest;
+use App\Http\Requests\UpdateAmbulanceTrackingRequest;
 
 class AmbulanceTrackingController extends Controller
 {
@@ -36,17 +37,18 @@ class AmbulanceTrackingController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateAmbulanceTrackingRequest $request, AmbulanceTracking $ambulance)
     {
-        $appointment->update($request->validated());
-        return response()->json($appointment);
+        $ambulance->update($request->validated());
+        return response()->json($ambulance);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(AmbulanceTracking $ambulance)
     {
-        //
+        $ambulance->delete();
+        return response()->json(null, 204);
     }
 }

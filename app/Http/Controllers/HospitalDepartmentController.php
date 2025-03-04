@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\HospitalDepartment;
 use App\Http\Requests\StoreHospitalDepartmentRequest;
 use App\Http\Requests\UpdateHospitalDepartmentRequest;

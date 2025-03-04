@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StorePharmacyInventoryRequest;
-use App\Http\Requests\UpdatePharmacyInventoryRequest;
 use App\Models\PharmacyInventory;
+use App\Http\Requests\UpdatePharmacyInventoryRequest;
+use App\Http\Requests\StorePharmacyInventoryRequest;
 
 class PharmacyInventoryController extends Controller
 {
