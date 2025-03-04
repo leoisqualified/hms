@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\PharmacyInventory;
-use App\Http\Requests\UpdatePharmacyInventoryRequest;
+use App\Http\Requests\UpdatePharmacyInventory2Request;
 use App\Http\Requests\StorePharmacyInventoryRequest;
 
 class PharmacyInventoryController extends Controller
@@ -36,7 +36,7 @@ class PharmacyInventoryController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdatePharmacyInventoryRequest $request, PharmacyInventory $inventory)
+    public function update(UpdatePharmacyInventory2Request $request, PharmacyInventory $inventory)
     {
         $inventory->update($request->validated());
         return response()->json($inventory);
