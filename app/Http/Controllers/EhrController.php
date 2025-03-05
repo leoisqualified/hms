@@ -2,53 +2,52 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\EHR;
-use App\Http\Requests\StoreEHRRequest;
-use App\Http\Requests\UpdateEHRRequest;
+use App\Models\Ehr;
+use App\Http\Requests\StoreEhrRequest;
+use App\Http\Requests\UpdateEhrRequest;
+use App\Models\Patient;
+use App\Models\Doctor;
 
 class EhrController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        return response()->json(EHR::with(['patient', 'doctor'])->get());
+        $records = Ehr::with(['patient', 'doctor'])->get();
+        return view('ehr.index', compact('records'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StoreEHRRequest $request)
+    public function create()
     {
-        $ehr = EHR::create($request->validated());
-        return response()->json($ehr, 201);
+        $patients = Patient::all();
+        $doctors = Doctor::all();
+        return view('ehr.create', compact('patients', 'doctors'));
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(EHR $ehr)
+    public function store(StoreEhrRequest $request)
     {
-        return response()->json($ehr->load(['patient', 'doctor']));
+        Ehr::create($request->validated());
+        return redirect()->route('ehr.index')->with('success', 'EHR record added successfully!');
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateEHRRequest $request, EHR $ehr)
+    public function show(Ehr $ehr)
+    {
+        return view('ehr.show', compact('ehr'));
+    }
+
+    public function edit(Ehr $ehr)
+    {
+        return view('ehr.edit', compact('ehr'));
+    }
+
+    public function update(UpdateEhrRequest $request, Ehr $ehr)
     {
         $ehr->update($request->validated());
-        return response()->json($ehr);
+        return redirect()->route('ehr.index')->with('success', 'EHR record updated successfully!');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(EHR $ehr)
+    public function destroy(Ehr $ehr)
     {
         $ehr->delete();
-        return response()->json(null, 204);
+        return redirect()->route('ehr.index')->with('success', 'EHR record deleted successfully!');
     }
 }

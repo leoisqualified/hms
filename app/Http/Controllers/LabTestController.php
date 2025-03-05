@@ -8,46 +8,42 @@ use App\Http\Requests\UpdateLabTestRequest;
 
 class LabTestController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        return response()->json(LabTest::with(['patient','appointment'])->get());
+        $tests = LabTest::all();
+        return view('labtests.index', compact('tests'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(UpdateLabTestRequest $request)
+    public function create()
     {
-        $labTest = LabTest::create($request->validated());
-        return response()->json($labTest, 201);
+        return view('labtests.create');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(LabTest $labTest)
+    public function store(StoreLabTestRequest $request)
     {
-        return response()->json($labTest->load(['patient', 'doctor']));
+        LabTest::create($request->validated());
+        return redirect()->route('labtests.index')->with('success', 'Test recorded.');
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(StoreLabTestRequest $request, LabTest $labTest)
+    public function show(LabTest $labtest)
     {
-        $labTest->update($request->validated());
-        return response()->json($labTest);
+        return view('labtests.show', compact('labtest'));
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(LabTest $labTest)
+    public function edit(LabTest $labtest)
     {
-        $labTest->delete();
-        return response()->json(null, 204);
+        return view('labtests.edit', compact('labtest'));
+    }
+
+    public function update(UpdateLabTestRequest $request, LabTest $labtest)
+    {
+        $labtest->update($request->validated());
+        return redirect()->route('labtests.index')->with('success', 'Test updated.');
+    }
+
+    public function destroy(LabTest $labtest)
+    {
+        $labtest->delete();
+        return redirect()->route('labtests.index')->with('success', 'Test removed.');
     }
 }

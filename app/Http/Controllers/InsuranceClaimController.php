@@ -2,54 +2,48 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreHospitalDepartmentRequest;
-use Illuminate\Http\Request;
 use App\Models\InsuranceClaim;
 use App\Http\Requests\StoreInsuranceClaimRequest;
 use App\Http\Requests\UpdateInsuranceClaimRequest;
 
 class InsuranceClaimController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        return response()->json(InsuranceClaim::with(['patient','appointment'])->get());
+        $claims = InsuranceClaim::all();
+        return view('insurance.index', compact('claims'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+    public function create()
+    {
+        return view('insurance.create');
+    }
+
     public function store(StoreInsuranceClaimRequest $request)
     {
-        $insurance = InsuranceClaim::create($request->validated());
-        return response()->json($insurance, 201);
+        InsuranceClaim::create($request->validated());
+        return redirect()->route('insurance.index')->with('success', 'Claim submitted.');
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(InsuranceClaim $insurance)
     {
-        return response()->json($insurance->load(['patient', 'doctor']));
+        return view('insurance.show', compact('insurance'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
+    public function edit(InsuranceClaim $insurance)
+    {
+        return view('insurance.edit', compact('insurance'));
+    }
+
     public function update(UpdateInsuranceClaimRequest $request, InsuranceClaim $insurance)
     {
         $insurance->update($request->validated());
-        return response()->json($insurance);;
+        return redirect()->route('insurance.index')->with('success', 'Claim updated.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(InsuranceClaim $insurance)
     {
         $insurance->delete();
-        return response()->json(null, 204);
+        return redirect()->route('insurance.index')->with('success', 'Claim deleted.');
     }
 }

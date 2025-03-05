@@ -8,46 +8,42 @@ use App\Http\Requests\UpdatePrescriptionRequest;
 
 class PrescriptionController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        return response()->json(Prescription::with(['patient', 'doctor'])->get());
+        $prescriptions = Prescription::all();
+        return view('prescriptions.index', compact('prescriptions'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+    public function create()
+    {
+        return view('prescriptions.create');
+    }
+
     public function store(StorePrescriptionRequest $request)
     {
-        $prescription = Prescription::create($request->validated());
-        return response()->json($prescription, 201);
+        Prescription::create($request->validated());
+        return redirect()->route('prescriptions.index')->with('success', 'Prescription added.');
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(Prescription $prescription)
     {
-        return response()->json($prescription->load(['pateint', 'doctor']));
+        return view('prescriptions.show', compact('prescription'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
+    public function edit(Prescription $prescription)
+    {
+        return view('prescriptions.edit', compact('prescription'));
+    }
+
     public function update(UpdatePrescriptionRequest $request, Prescription $prescription)
     {
         $prescription->update($request->validated());
-        return response()->json($prescription);
+        return redirect()->route('prescriptions.index')->with('success', 'Prescription updated.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Prescription $prescription)
     {
         $prescription->delete();
-        return response()->json(null, 204);
+        return redirect()->route('prescriptions.index')->with('success', 'Prescription deleted.');
     }
 }

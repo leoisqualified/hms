@@ -3,51 +3,47 @@
 namespace App\Http\Controllers;
 
 use App\Models\PharmacyInventory;
-use App\Http\Requests\UpdatePharmacyInventory2Request;
 use App\Http\Requests\StorePharmacyInventoryRequest;
+use App\Http\Requests\UpdatePharmacyInventoryRequest;
 
 class PharmacyInventoryController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        return response()->json(PharmacyInventory::with(['patient', 'doctor'])->get());
+        $medicines = PharmacyInventory::all();
+        return view('pharmacy.index', compact('medicines'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+    public function create()
+    {
+        return view('pharmacy.create');
+    }
+
     public function store(StorePharmacyInventoryRequest $request)
     {
-        $inventory = PharmacyInventory::create($request->validated());
-        return response()->json($inventory, 201);
+        PharmacyInventory::create($request->validated());
+        return redirect()->route('pharmacy.index')->with('success', 'Medicine added to inventory.');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(PharmacyInventory $inventory)
+    public function show(PharmacyInventory $pharmacy)
     {
-        return response()->json($inventory->load(['patient', 'doctor']));
+        return view('pharmacy.show', compact('pharmacy'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdatePharmacyInventory2Request $request, PharmacyInventory $inventory)
+    public function edit(PharmacyInventory $pharmacy)
     {
-        $inventory->update($request->validated());
-        return response()->json($inventory);
+        return view('pharmacy.edit', compact('pharmacy'));
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(PharmacyInventory $inventory)
+    public function update(UpdatePharmacyInventoryRequest $request, PharmacyInventory $pharmacy)
     {
-        $inventory->delete();
-        return response()->json(null, 204);
+        $pharmacy->update($request->validated());
+        return redirect()->route('pharmacy.index')->with('success', 'Inventory updated.');
+    }
+
+    public function destroy(PharmacyInventory $pharmacy)
+    {
+        $pharmacy->delete();
+        return redirect()->route('pharmacy.index')->with('success', 'Medicine removed from inventory.');
     }
 }

@@ -2,53 +2,48 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\AmbulanceTracking;
 use App\Http\Requests\StoreAmbulanceTrackingRequest;
 use App\Http\Requests\UpdateAmbulanceTrackingRequest;
 
 class AmbulanceTrackingController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        return response()->json(AmbulanceTracking::with(['patient','appointment'])->get());
+        $ambulances = AmbulanceTracking::all();
+        return view('ambulances.index', compact('ambulances'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+    public function create()
+    {
+        return view('ambulances.create');
+    }
+
     public function store(StoreAmbulanceTrackingRequest $request)
     {
-        $ambulance = AmbulanceTracking::create($request->validated());
-        return response()->json($ambulance, 201);
+        AmbulanceTracking::create($request->validated());
+        return redirect()->route('ambulances.index')->with('success', 'Ambulance tracking added successfully.');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(AmbulanceTracking $ambulance)
+    public function show(AmbulanceTracking $ambulanceTracking)
     {
-        return response()->json($ambulance->load(['patient', 'doctor']));
+        return view('ambulances.show', compact('ambulanceTracking'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateAmbulanceTrackingRequest $request, AmbulanceTracking $ambulance)
+    public function edit(AmbulanceTracking $ambulanceTracking)
     {
-        $ambulance->update($request->validated());
-        return response()->json($ambulance);
+        return view('ambulances.edit', compact('ambulanceTracking'));
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(AmbulanceTracking $ambulance)
+    public function update(UpdateAmbulanceTrackingRequest $request, AmbulanceTracking $ambulanceTracking)
     {
-        $ambulance->delete();
-        return response()->json(null, 204);
+        $ambulanceTracking->update($request->validated());
+        return redirect()->route('ambulances.index')->with('success', 'Ambulance tracking updated successfully.');
+    }
+
+    public function destroy(AmbulanceTracking $ambulanceTracking)
+    {
+        $ambulanceTracking->delete();
+        return redirect()->route('ambulances.index')->with('success', 'Ambulance tracking deleted successfully.');
     }
 }

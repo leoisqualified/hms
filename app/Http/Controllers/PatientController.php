@@ -5,52 +5,69 @@ namespace App\Http\Controllers;
 use App\Models\Patient;
 use App\Http\Requests\StorePatientRequest;
 use App\Http\Requests\UpdatePatientRequest;
-
-
+use Illuminate\Http\Request;
+use App\Models\User;
 
 class PatientController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display a listing of the patients.
      */
     public function index()
     {
-        return response()->json(Patient::with('user')->get());
+        $patients = Patient::with('user')->get();
+        return view('patients.index', compact('patients')); // Return the index Blade view
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Show the form for creating a new patient.
+     */
+    public function create()
+    {
+        $users = User::where('role', 'patient')->get();
+        return view('patients.create', compact('users')); // Return the create form view
+    }
+
+    /**
+     * Store a newly created patient in storage.
      */
     public function store(StorePatientRequest $request)
     {
-        $patient = Patient::create($request->validated());
-        return response()->json($patient, 201);
+        Patient::create($request->validated());
+        return redirect()->route('patients.index')->with('success', 'Patient added successfully!');
     }
 
     /**
-     * Display the specified resource.
+     * Display the specified patient.
      */
     public function show(Patient $patient)
     {
-        return response()->json($patient->load('user'));
-        
+        return view('patients.show', compact('patient')); // Return the show Blade view
     }
 
     /**
-     * Update the specified resource in storage.
+     * Show the form for editing the specified patient.
+     */
+    public function edit(Patient $patient)
+    {
+        return view('patients.edit', compact('patient')); // Return the edit Blade view
+    }
+
+    /**
+     * Update the specified patient in storage.
      */
     public function update(UpdatePatientRequest $request, Patient $patient)
     {
         $patient->update($request->validated());
-        return response()->json($patient);
+        return redirect()->route('patients.index')->with('success', 'Patient updated successfully!');
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove the specified patient from storage.
      */
     public function destroy(Patient $patient)
     {
         $patient->delete();
-        return response()->json(null, 204);
+        return redirect()->route('patients.index')->with('success', 'Patient deleted successfully!');
     }
 }

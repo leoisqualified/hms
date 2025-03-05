@@ -2,53 +2,48 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Billing;
 use App\Http\Requests\StoreBillingRequest;
 use App\Http\Requests\UpdateBillingRequest;
 
 class BillingController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        return response()->json(Billing::with('patient')->get());
+        $bills = Billing::all();
+        return view('billing.index', compact('bills'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+    public function create()
+    {
+        return view('billing.create');
+    }
+
     public function store(StoreBillingRequest $request)
     {
-        $billing = Billing::create($request->validated());
-        return response()->json($billing, 201);
+        Billing::create($request->validated());
+        return redirect()->route('billing.index')->with('success', 'Billing record added successfully.');
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(Billing $billing)
     {
-        return response()->json($billing->load(['patient', 'doctor']));
+        return view('billing.show', compact('billing'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
+    public function edit(Billing $billing)
+    {
+        return view('billing.edit', compact('billing'));
+    }
+
     public function update(UpdateBillingRequest $request, Billing $billing)
     {
         $billing->update($request->validated());
-        return response()->json($billing);
+        return redirect()->route('billing.index')->with('success', 'Billing record updated successfully.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Billing $billing)
     {
         $billing->delete();
-        return response()->json(null, 204);
+        return redirect()->route('billing.index')->with('success', 'Billing record deleted successfully.');
     }
 }

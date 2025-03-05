@@ -2,54 +2,48 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Prescription;
-use App\Http\Requests\StoreStaffScheduleRequest;
-use App\Http\Requests\UpdatePrescriptionRequest;
-use App\Http\Requests\UpdateStaffScheduleRequest;
 use App\Models\StaffSchedule;
+use App\Http\Requests\StoreStaffScheduleRequest;
+use App\Http\Requests\UpdateStaffScheduleRequest;
 
-class StaffScheduleController extends Controller
+class StaffSchedulerController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        return response()->json(Prescription::with(['patient', 'doctor'])->get());
+        $schedules = StaffSchedule::all();
+        return view('staffschedules.index', compact('schedules'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+    public function create()
+    {
+        return view('staffschedules.create');
+    }
+
     public function store(StoreStaffScheduleRequest $request)
     {
-        $schedule = Prescription::create($request->validated());
-        return response()->json($schedule, 201);
+        StaffSchedule::create($request->validated());
+        return redirect()->route('staffschedules.index')->with('success', 'Staff schedule added successfully.');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(StaffSchedule $schedule)
+    public function show(StaffSchedule $staffSchedule)
     {
-        return response()->json($schedule->load(['patient', 'doctor']));
+        return view('staffschedules.show', compact('staffSchedule'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateStaffScheduleRequest $request, StaffSchedule $schedule)
+    public function edit(StaffSchedule $staffSchedule)
     {
-        $schedule->update($request->validated());
-        return response()->json($schedule);
+        return view('staffschedules.edit', compact('staffSchedule'));
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(StaffSchedule $schedule)
+    public function update(UpdateStaffScheduleRequest $request, StaffSchedule $staffSchedule)
     {
-        $schedule->delete();
-        return response()->json(null, 204);
+        $staffSchedule->update($request->validated());
+        return redirect()->route('staffschedules.index')->with('success', 'Staff schedule updated successfully.');
+    }
+
+    public function destroy(StaffSchedule $staffSchedule)
+    {
+        $staffSchedule->delete();
+        return redirect()->route('staffschedules.index')->with('success', 'Staff schedule deleted successfully.');
     }
 }
