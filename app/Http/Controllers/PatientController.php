@@ -10,6 +10,10 @@ use App\Models\User;
 
 class PatientController extends Controller
 {
+    public function dashboard () {
+        return view('patient.dashboard');
+    }
+
     /**
      * Display a listing of the patients.
      */

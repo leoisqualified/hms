@@ -9,6 +9,9 @@ use App\Models\User;
 
 class DoctorController extends Controller
 {
+    public function dashboard () {
+        return view('doctor.dashboard');
+    }
     public function index()
     {
         $doctors = Doctor::with('user')->get();

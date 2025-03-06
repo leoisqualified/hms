@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\PharmacyInventory;
 use App\Http\Requests\StorePharmacyInventoryRequest;
-use App\Http\Requests\UpdatePharmacyInventoryRequest;
+use App\Http\Requests\UpdatePharmacyInventory2Request;
 
 class PharmacyInventoryController extends Controller
 {
@@ -35,7 +35,7 @@ class PharmacyInventoryController extends Controller
         return view('pharmacy.edit', compact('pharmacy'));
     }
 
-    public function update(UpdatePharmacyInventoryRequest $request, PharmacyInventory $pharmacy)
+    public function update(UpdatePharmacyInventory2Request $request, PharmacyInventory $pharmacy)
     {
         $pharmacy->update($request->validated());
         return redirect()->route('pharmacy.index')->with('success', 'Inventory updated.');
