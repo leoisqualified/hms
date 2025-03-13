@@ -32,5 +32,15 @@ class AppointmentController extends Controller
         return redirect()->route('patient.dashboard')->with('success', 'Appointment booked successfully!');
     }
 
-    
+    public function doctorAppointments()
+{
+    $doctorId = Auth::id(); // Get the authenticated doctor’s ID
+
+    $appointments = Appointment::where('doctor_id', $doctorId)
+        ->with('patient') // Load patient details
+        ->get();
+
+    return view('doctor.appointments', compact('appointments'));
+}
+
 }

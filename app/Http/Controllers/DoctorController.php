@@ -11,4 +11,20 @@ class DoctorController extends Controller
         $appointments = Appointment::where('patient_id', Auth::id())->get();
         return view ('doctor.dashboard', compact('appointments'));
     }
+
+    
+    public function prescribe(Request $request) {
+        $request->validate([
+        'patient_id' => 'required|exists:users,id',
+        'medications' => 'required|string',
+        ]);
+
+        Prescription::create([
+        'doctor_id' => Auth::id(),
+        'patient_id' => $request->patient_id,
+        'medications' => $request->medications,
+        ]);
+
+        return redirect()->route('doctor.dashboard')->with('success', 'Prescription Saved');
+    }
 }

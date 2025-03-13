@@ -11,4 +11,10 @@ class PharmacistController extends Controller
 
         return view('pharmacist.dashboard', compact('prescriptions'));
     }
+
+    public function prescriptions() {
+        $prescriptions = Prescription::with('patient_id', 'doctor_id')->get();
+
+        return view('pharmacist.prescriptions', compact('prescriptions'));
+    }
 }
