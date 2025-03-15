@@ -7,16 +7,18 @@ use App\Http\Controllers\DoctorController;
 use App\Http\Controllers\NurseController;
 use App\Http\Controllers\PatientController;
 use App\Http\Controllers\PharmacistController;
+use App\Http\Controllers\PaymentController;
 use Illuminate\Support\Facades\Route;
 
 //Public Routes
 Route::get('/', function () {
-    return view('auth.login')->name('login');
-});
+    return view('auth.login');
+})->name('login');
+
 
 //Admin Route
 Route::middleware(['auth', 'role:admin'])->group(function() {
-    Route::get('/admin/dashboard', [AdminController::class, 'dashboard']);
+    Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
 });
 
 // Patient Route
@@ -44,6 +46,12 @@ Route::middleware(['auth', 'role:nurse'])->group(function () {
 Route::middleware(['auth', 'role:pharmacist'])->group(function () {
     Route::get('/pharmacist/dashboard', [PharmacistController::class, 'dashboard'])->name('pharmacist.dashboard');
     Route::get('/pharmacist/prescriptions', [PharmacistController::class, 'prescriptions'])->name('pharmacist.prescriptions');
+});
+
+Route::middleware(['auth', 'role:patient'])->group(function () {
+    Route::get('/payment/checkout/{appointment}', [PaymentController::class, 'checkout'])->name('payment.checkout');
+    Route::get('/payment/success/{appointment}', [PaymentController::class, 'success'])->name('payment.success');
+    Route::get('/payment/cancel/{appointment}', [PaymentController::class, 'cancel'])->name('payment.cancel');
 });
 
 Route::get('/dashboard', function () {

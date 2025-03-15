@@ -9,7 +9,11 @@ class Appointment extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['patient_id', 'doctor_id', 'date','time', 'status'];
+    protected $fillable = ['patient_id', 'doctor_id', 'date','time', 'status', 'is_paid'];
+
+    protected $casts = [
+        'is_paid' => 'boolean'
+    ];
 
     public function patient() {
         return $this->belongsTo(User::class, 'patient_id');

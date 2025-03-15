@@ -6,13 +6,15 @@
     <title>{{ $title ?? 'Hospital Management System' }}</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="bg-gray-100">
-    <x-navbar />  <!-- Common navbar for all roles -->
+<body class="bg-gray-100 flex flex-col min-h-screen">
 
-    <main class="container mx-auto py-6">
-        {{ $slot }}  <!-- Each role’s dashboard content goes here -->
+    <x-navbar />  <!-- Common navbar -->
+
+    <main class="container mx-auto py-6 flex-grow">
+        {{ $slot }}  <!-- Main Content -->
     </main>
 
-    <x-footer />  <!-- Footer -->
+    <x-footer />  <!-- Fixed Footer -->
+    
 </body>
 </html>

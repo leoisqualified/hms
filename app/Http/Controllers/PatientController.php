@@ -4,12 +4,14 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Appointment;
+use Illuminate\Support\Facades\Auth;
 
 class PatientController extends Controller
 {
+    
     //Patient Dashboard
-    public function dashbord() {
-        $appointments = Appointment::where('patient_id', auth()->id())->get();
+    public function dashboard() {
+        $appointments = Appointment::where('patient_id', Auth::id())->get();
         return view('patient.dashboard', compact('appointments'));
     }
 
