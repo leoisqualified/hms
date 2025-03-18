@@ -3,6 +3,9 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PatientController;
 use App\Http\Controllers\DoctorController;
+use App\Http\Controllers\AppointmentController;
+use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\PrescriptionPaymentController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -14,7 +17,14 @@ Route::get('/', function () {
 // Patient Routes
 Route::middleware(['auth', 'role:patient'])->group(function () {
     Route::get('/patient/dashboard', [PatientController::class, 'index'])->name('patient.dashboard');
+    Route::get('/patient/book-appointment', [AppointmentController::class, 'create'])->name('patient.book-appointment');
+    Route::post('/patient/book-appointment', [AppointmentController::class, 'store'])->name('patient.book-appointment.store');
+    Route::get('/payment/appointment/{id}', [PaymentController::class, 'payAppointment'])->name('patient.pay-appointment');
+    Route::get('/payment/success/{id}', [PaymentController::class, 'paymentSuccess'])->name('payment.success');
+    Route::get('/payment/prescription/{id}', [PrescriptionPaymentController::class, 'payPrescription'])->name('prescription.pay');
+    Route::get('/payment/prescription/success/{id}', [PrescriptionPaymentController::class, 'paymentSuccess'])->name('prescription.payment.success');
 });
+
 
 
 // Doctor Routes
