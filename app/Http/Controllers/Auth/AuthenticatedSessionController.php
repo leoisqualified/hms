@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
@@ -28,7 +27,24 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->intended(route('dashboard', absolute: false));
+        // Get the authenticated user
+        $user = Auth::user();
+
+        // Redirect based on user role
+        if ($user->hasRole('admin')) {
+            return redirect()->route('admin.dashboard');
+        } elseif ($user->hasRole('doctor')) {
+            return redirect()->route('doctor.dashboard');
+        } elseif ($user->hasRole('nurse')) {
+            return redirect()->route('nurse.dashboard');
+        } elseif ($user->hasRole('pharmacist')) {
+            return redirect()->route('pharmacist.dashboard');
+        } elseif ($user->hasRole('patient')) {
+            return redirect()->route('patient.dashboard');
+        }
+
+        // Default fallback
+        return redirect('/dashboard');
     }
 
     /**

@@ -11,12 +11,15 @@ class RoleSeeder extends Seeder
     /**
      * Run the database seeds.
      */
-    public function run(): void
+    public function run()
     {
-        Role::create(['name' => 'admin']);
-        Role::create(['name' => 'doctor']);
-        Role::create(['name' => 'nurse']);
-        Role::create(['name' => 'pharmacist']);
-        Role::create(['name' => 'patient']);
+        // Prevent duplicate role creation
+        Role::firstOrCreate(['name' => 'admin', 'guard_name' => 'web']);
+        Role::firstOrCreate(['name' => 'doctor', 'guard_name' => 'web']);
+        Role::firstOrCreate(['name' => 'nurse', 'guard_name' => 'web']);
+        Role::firstOrCreate(['name' => 'pharmacist', 'guard_name' => 'web']);
+        Role::firstOrCreate(['name' => 'patient', 'guard_name' => 'web']);
+
+        $this->command->info('Roles seeded successfully!');
     }
 }

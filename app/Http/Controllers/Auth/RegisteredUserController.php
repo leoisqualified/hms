@@ -35,6 +35,7 @@ class RegisteredUserController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'role' => ['required', 'string', 'in:admin,doctor,nurse,pharmacist,patient'], // Ensure role is valid
         ]);
 
         $user = User::create([
@@ -43,15 +44,21 @@ class RegisteredUserController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        // Assign default role to new users
-        $user->assignRole('patient'); // Default role
+        // Assign role
+        $user->assignRole($request->role);
 
         event(new Registered($user));
 
         Auth::login($user);
 
-        return redirect(route('dashboard', absolute: false));
+        // Redirect based on role
+        return match (true) {
+            $user->hasRole('patient') => redirect()->route('patient.dashboard'),
+            $user->hasRole('doctor') => redirect()->route('doctor.dashboard'),
+            $user->hasRole('nurse') => redirect()->route('nurse.dashboard'),
+            $user->hasRole('pharmacist') => redirect()->route('pharmacist.dashboard'),
+            $user->hasRole('admin') => redirect()->route('admin.dashboard'),
+            default => redirect()->route('dashboard'),
+        };
     }
-
-
 }
