@@ -26,6 +26,7 @@ Route::middleware(['auth', 'role:patient'])->group(function () {
     Route::get('/payment/success/{id}', [PaymentController::class, 'paymentSuccess'])->name('payment.success');
     Route::get('/payment/prescription/{id}', [PrescriptionPaymentController::class, 'payPrescription'])->name('prescription.pay');
     Route::get('/payment/prescription/success/{id}', [PrescriptionPaymentController::class, 'paymentSuccess'])->name('prescription.payment.success');
+    Route::get('/patient/prescriptions', [ProfileController::class, 'index'])->name('patient.prescriptions');
 });
 
 
