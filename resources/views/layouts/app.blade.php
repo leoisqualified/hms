@@ -83,7 +83,7 @@
     </style>
 
     <!-- Scripts -->
-    @vite(['resources/js/app.js'])
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
 </head>
 <body class="d-flex flex-column min-vh-100 bg-light">
 

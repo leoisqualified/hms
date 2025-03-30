@@ -10,12 +10,22 @@ use App\Models\Appointment;
 class AppointmentController extends Controller
 {
     public function create() {
+        $user = Auth::user();
+    
+        // Get all doctors
         $doctors = User::whereHas('roles', function($q) {
             $q->where('name', 'doctor');
         })->get();
-
-        return view('patient.book-appointment', compact('doctors'));
+    
+        // Get upcoming appointments for the logged-in patient
+        $upcomingAppointments = Appointment::where('patient_id', $user->id)
+            ->whereDate('date', '>=', now()) // Only future appointments
+            ->orderBy('date', 'asc')
+            ->get();
+    
+        return view('patient.book-appointment', compact('doctors', 'upcomingAppointments'));
     }
+    
 
     public function store(Request $request) {
         $request->validate([

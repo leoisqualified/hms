@@ -4,13 +4,23 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Stripe\Stripe;
+use Illuminate\Support\Facades\Auth;
 use Stripe\Checkout\Session;
 use App\Models\Prescription;
+use App\Models\Appointment;
 use App\Models\Payment;
 
 
 class PrescriptionPaymentController extends Controller
 {
+    public function index() {
+        // Get all appointments for the logged-in patient along with prescriptions
+        $appointments = Appointment::where('patient_id', Auth::id())->with('prescriptions')->get();
+    
+        return view('patient.prescriptions', compact('appointments'));
+    }
+    
+    
     public function payPrescription($id)
     {
         $prescription = Prescription::findOrFail($id);
