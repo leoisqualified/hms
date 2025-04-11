@@ -29,6 +29,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
     Route::get('/admin/create-staff', [AdminController::class, 'showCreateStaffForm'])->name('admin.create-staff');
     Route::post('/admin/create-staff', [AdminController::class, 'registerStaff'])->name('admin.register-staff');
+    Route::get('/admin/patients', [AdminController::class, 'listPatients'])->name('admin.patients');
 });
 
 // Receptionist Routes

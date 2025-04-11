@@ -55,7 +55,7 @@
                             <div class="ml-5 w-0 flex-1">
                                 <dt class="text-sm font-medium text-gray-500 truncate">Active Appointments</dt>
                                 <dd class="flex items-baseline">
-                                    <p class="text-2xl font-semibold text-gray-900">142</p>
+                                    <p class="text-2xl font-semibold text-gray-900">{{ $activeAppointments }}</p>
                                 </dd>
                             </div>
                         </div>
@@ -118,7 +118,7 @@
                         </div>
                     </a>
 
-                    <a href="#" class="bg-white overflow-hidden shadow rounded-lg hover:shadow-md transition-shadow duration-300">
+                    <a href="{{ route('admin.patients') }}" class="bg-white overflow-hidden shadow rounded-lg hover:shadow-md transition-shadow duration-300">
                         <div class="px-4 py-5 sm:p-6 flex items-center">
                             <div class="flex-shrink-0 bg-green-100 rounded-md p-3">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">

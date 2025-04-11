@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Appointment;
 use App\Mail\SendCredentialsMail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -15,7 +16,9 @@ class AdminController extends Controller
     public function dashboard()
     {
         $totalUsers = User::count();
-        return view('admin.dashboard', compact('totalUsers'));
+        $activeAppointments = Appointment::where('status', 'scheduled')->count();
+
+        return view('admin.dashboard', compact('totalUsers', 'activeAppointments'));
     }
 
     // Show the register staff form
@@ -48,5 +51,11 @@ class AdminController extends Controller
         Mail::to($staff->email)->send(new SendCredentialsMail($staff->email, $password));
 
         return redirect()->back()->with('success', 'Staff registered successfully.');
+    }
+
+    public function listPatients()
+    {
+        $patients = User::where('role', 'patient')->get();
+        return view('admin.patient-list', compact('patients'));
     }
 }
