@@ -13,7 +13,7 @@
             <!-- Title with better hierarchy -->
             <div class="text-center space-y-1">
                 <h1 class="text-2xl sm:text-3xl font-bold text-gray-900">Hospital Management System</h1>
-                <p class="text-sm sm:text-base text-gray-600">Secure staff login portal</p>
+                <p class="text-sm sm:text-base text-gray-600">Secure Login Portal</p>
             </div>
 
             <!-- Session Status -->
@@ -34,7 +34,7 @@
                         required 
                         autofocus 
                         autocomplete="username"
-                        placeholder="Enter your hospital email"
+                        placeholder="Enter your email"
                     />
                     <x-input-error :messages="$errors->get('email')" class="mt-2" />
                 </div>

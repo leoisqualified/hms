@@ -58,7 +58,8 @@ Route::middleware(['auth', 'role:doctor'])->group(function () {
 // Pharmacist Routes
 Route::middleware(['auth', 'role:pharmacist'])->group(function () {
     Route::get('/pharmacist/dashboard', [PharmacistController::class, 'dashboard'])->name('pharmacist.dashboard');
-    Route::post('/pharmacist/verify-patient', [PharmacistController::class, 'verifyPatient'])->name('pharmacist.verify-patient');
+    Route::get('/pharmacist/verify-patient', [PharmacistController::class, 'verifyPatient'])->name('pharmacist.verify-patient');
+    Route::get('/pharmacist/verify-patient', [PharmacistController::class, 'verifyPatient'])->name('pharmacist.verify-patient');
     Route::post('/pharmacist/dispense/{prescriptionId}', [PharmacistController::class, 'markAsDispensed'])->name('pharmacist.dispense');
 });
 

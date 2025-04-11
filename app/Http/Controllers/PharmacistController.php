@@ -28,4 +28,10 @@ class PharmacistController extends Controller
         $prescription->update(['status' => 'dispensed']);
         return redirect()->back()->with('success', 'Medication dispensed.');
     }
+
+    public function verifyPatient()
+    {
+        // logic for verifying a patient
+        return view('pharmacist.verify-patient');
+    }
 }
