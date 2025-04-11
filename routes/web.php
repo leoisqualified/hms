@@ -30,6 +30,9 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/admin/create-staff', [AdminController::class, 'showCreateStaffForm'])->name('admin.create-staff');
     Route::post('/admin/create-staff', [AdminController::class, 'registerStaff'])->name('admin.register-staff');
     Route::get('/admin/patients', [AdminController::class, 'listPatients'])->name('admin.patients');
+    Route::get('/admin/patients/{patient}/edit', [AdminController::class, 'editPatient'])->name('admin.patients.edit');
+    Route::put('/admin/patients/{patient}', [AdminController::class, 'updatePatient'])->name('admin.patients.update');
+    Route::delete('/admin/patients/{patient}', [AdminController::class, 'deletePatient'])->name('admin.patients.destroy');
 });
 
 // Receptionist Routes

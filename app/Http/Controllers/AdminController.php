@@ -58,4 +58,51 @@ class AdminController extends Controller
         $patients = User::where('role', 'patient')->get();
         return view('admin.patient-list', compact('patients'));
     }
+
+    // Show list of patients (with optional search)
+    public function patientsList(Request $request)
+    {
+        $query = User::where('role', 'patient');
+
+        if ($request->has('search') && $request->search !== '') {
+            $query->where(function ($q) use ($request) {
+                $q->where('name', 'like', '%' . $request->search . '%')
+                ->orWhere('email', 'like', '%' . $request->search . '%');
+            });
+        }
+
+        $patients = $query->latest()->get();
+
+        return view('admin.patient-list', compact('patients'));
+    }
+
+    // Show edit form
+    public function editPatient(User $patient)
+    {
+        return view('admin.edit-patient', compact('patient'));
+    }
+
+    // Update patient info
+    public function updatePatient(Request $request, User $patient)
+    {
+        $request->validate([
+            'name' => 'required|string',
+            'email' => 'required|email|unique:users,email,' . $patient->id,
+        ]);
+
+        $patient->update([
+            'name' => $request->name,
+            'email' => $request->email,
+        ]);
+
+        return redirect()->route('admin.patients')->with('success', 'Patient updated successfully.');
+    }
+
+    // Delete patient
+public function deletePatient(User $patient)
+{
+    $patient->delete();
+
+    return redirect()->route('admin.patients')->with('success', 'Patient deleted successfully.');
+}
 }
