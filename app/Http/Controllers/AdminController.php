@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ActivityLog;
+use App\Models\Appointment;
 use App\Models\DoctorSchedule;
 use App\Models\User;
-use App\Models\Appointment;
 use App\Mail\SendCredentialsMail;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
@@ -18,8 +20,9 @@ class AdminController extends Controller
     {
         $totalUsers = User::count();
         $activeAppointments = Appointment::where('status', 'scheduled')->count();
+        $recentActivities = ActivityLog::with('user')->latest()->take(5)->get();
 
-        return view('admin.dashboard', compact('totalUsers', 'activeAppointments'));
+        return view('admin.dashboard', compact('totalUsers', 'activeAppointments', 'recentActivities'));
     }
 
     // Show the register staff form
@@ -172,4 +175,24 @@ class AdminController extends Controller
 
         return redirect()->route('admin.schedule.manage')->with('success', 'Schedule updated successfully.');
     }
+
+    public function activityLogs(Request $request)
+{
+    abort_unless(Auth::user()->is_admin, 403);
+
+    $search = $request->input('search');
+
+    $logs = ActivityLog::with('user')
+        ->when($search, function ($query, $search) {
+            $query->whereHas('user', function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%");
+            })
+            ->orWhere('description', 'like', "%{$search}%");
+        })
+        ->latest()
+        ->paginate(20);
+
+    return view('admin.activity-logs', compact('logs', 'search'));
+}
+
 }

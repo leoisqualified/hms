@@ -121,7 +121,7 @@
                 </div>
             </a>
 
-            <a href="#" class="bg-white overflow-hidden shadow rounded-lg hover:shadow-md transition-shadow duration-300">
+            {{-- <a href="#" class="bg-white overflow-hidden shadow rounded-lg hover:shadow-md transition-shadow duration-300">
                 <div class="px-4 py-5 sm:p-6 flex items-center">
                     <div class="flex-shrink-0 bg-purple-100 rounded-md p-3">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -131,6 +131,20 @@
                     <div class="ml-4">
                         <h3 class="text-lg font-medium text-gray-900">Medical Reports</h3>
                         <p class="mt-1 text-sm text-gray-500">Generate diagnostic reports</p>
+                    </div>
+                </div>
+            </a> --}}
+
+            <a href="{{ route('doctor.schedules') }}" class="bg-white overflow-hidden shadow rounded-lg hover:shadow-md transition-shadow duration-300">
+                <div class="px-4 py-5 sm:p-6 flex items-center">
+                    <div class="flex-shrink-0 bg-indigo-100 rounded-md p-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3M5 11h14M5 19h14M5 15h14" />
+                        </svg>
+                    </div>
+                    <div class="ml-4">
+                        <h3 class="text-lg font-medium text-gray-900">My Schedules</h3>
+                        <p class="mt-1 text-sm text-gray-500">View your working hours and appointments</p>
                     </div>
                 </div>
             </a>

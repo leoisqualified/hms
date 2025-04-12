@@ -163,70 +163,26 @@
             </div>
 
             <!-- Recent Activity -->
-            <div class="bg-white shadow rounded-lg overflow-hidden">
-                <div class="px-4 py-5 sm:px-6 border-b border-gray-200">
-                    <h3 class="text-lg font-medium leading-6 text-gray-900">Recent Activity</h3>
-                </div>
-                <div class="divide-y divide-gray-200">
-                    <div class="px-4 py-4 sm:px-6 hover:bg-gray-50 transition-colors duration-150">
-                        <div class="flex items-center">
-                            <div class="min-w-0 flex-1 flex items-center">
-                                <div class="flex-shrink-0">
-                                    <img class="h-10 w-10 rounded-full" src="https://ui-avatars.com/api/?name=John+Doe&background=4f46e5&color=fff" alt="">
-                                </div>
-                                <div class="min-w-0 flex-1 px-4">
-                                    <div>
-                                        <p class="text-sm font-medium text-indigo-600 truncate">Dr. John Doe</p>
-                                        <p class="mt-1 text-sm text-gray-500">Added new patient record</p>
-                                    </div>
-                                </div>
-                            </div>
+            @foreach ($recentActivities as $log)
+            <div class="px-4 py-4 sm:px-6 hover:bg-gray-50 transition-colors duration-150">
+                <div class="flex items-center">
+                    <div class="min-w-0 flex-1 flex items-center">
+                        <div class="flex-shrink-0">
+                            <img class="h-10 w-10 rounded-full"
+                                src="https://ui-avatars.com/api/?name={{ urlencode($log->user->name ?? 'System') }}&background=4f46e5&color=fff"
+                                alt="">
+                        </div>
+                        <div class="min-w-0 flex-1 px-4">
                             <div>
-                                <p class="text-sm text-gray-500">2 hours ago</p>
+                                <p class="text-sm font-medium text-indigo-600 truncate">{{ $log->user->name ?? 'System' }}</p>
+                                <p class="mt-1 text-sm text-gray-500">{{ $log->description }}</p>
                             </div>
                         </div>
                     </div>
-                    <div class="px-4 py-4 sm:px-6 hover:bg-gray-50 transition-colors duration-150">
-                        <div class="flex items-center">
-                            <div class="min-w-0 flex-1 flex items-center">
-                                <div class="flex-shrink-0">
-                                    <img class="h-10 w-10 rounded-full" src="https://ui-avatars.com/api/?name=Jane+Smith&background=4f46e5&color=fff" alt="">
-                                </div>
-                                <div class="min-w-0 flex-1 px-4">
-                                    <div>
-                                        <p class="text-sm font-medium text-indigo-600 truncate">Nurse Jane Smith</p>
-                                        <p class="mt-1 text-sm text-gray-500">Updated medication list</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div>
-                                <p class="text-sm text-gray-500">4 hours ago</p>
-                            </div>
-                        </div>
+                    <div>
+                        <p class="text-sm text-gray-500">{{ $log->created_at->diffForHumans() }}</p>
                     </div>
-                    <div class="px-4 py-4 sm:px-6 hover:bg-gray-50 transition-colors duration-150">
-                        <div class="flex items-center">
-                            <div class="min-w-0 flex-1 flex items-center">
-                                <div class="flex-shrink-0">
-                                    <img class="h-10 w-10 rounded-full" src="https://ui-avatars.com/api/?name=Admin&background=4f46e5&color=fff" alt="">
-                                </div>
-                                <div class="min-w-0 flex-1 px-4">
-                                    <div>
-                                        <p class="text-sm font-medium text-indigo-600 truncate">System Admin</p>
-                                        <p class="mt-1 text-sm text-gray-500">New staff member registered</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div>
-                                <p class="text-sm text-gray-500">1 day ago</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="px-4 py-4 sm:px-6 bg-gray-50 text-center">
-                    <a href="#" class="text-sm font-medium text-indigo-600 hover:text-indigo-500">View all activity</a>
                 </div>
             </div>
-        </main>
-    </div>
+            @endforeach
 @endsection

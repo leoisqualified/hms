@@ -14,9 +14,9 @@ Route::get('/', function () {
     return view('auth.login');  
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+// Route::get('/dashboard', function () {
+//     return view('dashboard');
+// })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -39,6 +39,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::delete('/admin/schedule/{id}', [AdminController::class, 'deleteDoctorSchedule'])->name('admin.schedule.delete');
     Route::get('/admin/schedule/{id}/edit', [AdminController::class, 'editDoctorSchedule'])->name('admin.schedule.edit');
     Route::put('/admin/schedule/{id}', [AdminController::class, 'updateDoctorSchedule'])->name('admin.schedule.update');
+    Route::get('/admin/activity-logs', [AdminController::class, 'activityLogs'])->name('admin.logs');
 
 
 });
@@ -64,6 +65,7 @@ Route::middleware(['auth', 'role:doctor'])->group(function () {
     Route::get('/doctor/dashboard', [DoctorController::class, 'dashboard'])->name('doctor.dashboard');
     Route::get('/doctor/patient/{patientId}', [DoctorController::class, 'viewPatient'])->name('doctor.view-patient');
     Route::post('/doctor/prescribe/{patientId}', [DoctorController::class, 'prescribe'])->name('doctor.prescribe');
+    Route::get('/doctor/schedules', [DoctorController::class, 'mySchedules'])->name('doctor.schedules');
 });
 
 
