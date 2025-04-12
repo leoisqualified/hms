@@ -132,7 +132,7 @@
                         </div>
                     </a>
 
-                    <a href="#" class="bg-white overflow-hidden shadow rounded-lg hover:shadow-md transition-shadow duration-300">
+                    <a href="{{ route('admin.schedules') }}" class="bg-white overflow-hidden shadow rounded-lg hover:shadow-md transition-shadow duration-300">
                         <div class="px-4 py-5 sm:p-6 flex items-center">
                             <div class="flex-shrink-0 bg-blue-100 rounded-md p-3">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">

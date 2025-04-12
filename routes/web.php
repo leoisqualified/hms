@@ -33,6 +33,14 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/admin/patients/{patient}/edit', [AdminController::class, 'editPatient'])->name('admin.patients.edit');
     Route::put('/admin/patients/{patient}', [AdminController::class, 'updatePatient'])->name('admin.patients.update');
     Route::delete('/admin/patients/{patient}', [AdminController::class, 'deletePatient'])->name('admin.patients.destroy');
+    Route::get('/admin/schedules', [AdminController::class, 'doctorSchedules'])->name('admin.schedules');
+    Route::get('/admin/schedule/{id}', [AdminController::class, 'manageDoctorSchedule'])->name('admin.schedule.manage');
+    Route::post('/admin/schedule/{doctorId}', [AdminController::class, 'storeDoctorSchedule'])->name('admin.schedule.store');
+    Route::delete('/admin/schedule/{id}', [AdminController::class, 'deleteDoctorSchedule'])->name('admin.schedule.delete');
+    Route::get('/admin/schedule/{id}/edit', [AdminController::class, 'editDoctorSchedule'])->name('admin.schedule.edit');
+    Route::put('/admin/schedule/{id}', [AdminController::class, 'updateDoctorSchedule'])->name('admin.schedule.update');
+
+
 });
 
 // Receptionist Routes

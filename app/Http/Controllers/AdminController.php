@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\DoctorSchedule;
 use App\Models\User;
 use App\Models\Appointment;
 use App\Mail\SendCredentialsMail;
@@ -99,10 +100,76 @@ class AdminController extends Controller
     }
 
     // Delete patient
-public function deletePatient(User $patient)
-{
-    $patient->delete();
+    public function deletePatient(User $patient)
+    {
+        $patient->delete();
 
-    return redirect()->route('admin.patients')->with('success', 'Patient deleted successfully.');
-}
+        return redirect()->route('admin.patients')->with('success', 'Patient deleted successfully.');
+    }
+
+    // Doctor schedules
+    public function doctorSchedules()
+    {
+        $doctors = User::where('role', 'doctor')->get();
+        return view('admin.doctor-schedules', compact('doctors'));
+    }
+
+    // Manage Doctor Schedule
+    public function manageDoctorSchedule($id)
+    {
+        $doctor = User::findOrFail($id);
+        $schedules = DoctorSchedule::where('doctor_id', $id)->get();
+
+        return view('admin.manage-doctor-schedule', compact('doctor', 'schedules'));
+    }
+
+    public function storeDoctorSchedule(Request $request, $doctorId)
+    {
+        $request->validate([
+            'day_of_week' => 'required|string',
+            'start_time' => 'required|date_format:H:i',
+            'end_time' => 'required|date_format:H:i|after:start_time',
+        ]);
+
+        DoctorSchedule::create([
+            'doctor_id' => $doctorId,
+            'day_of_week' => $request->day_of_week,
+            'start_time' => $request->start_time,
+            'end_time' => $request->end_time,
+        ]);
+
+        return redirect()->back()->with('success', 'Schedule slot added successfully.');
+    }
+
+    public function deleteDoctorSchedule($id)
+    {
+        $schedule = DoctorSchedule::findOrFail($id);
+        $schedule->delete();
+
+        return redirect()->back()->with('success', 'Schedule slot deleted.');
+    }
+
+    public function editDoctorSchedule($id)
+    {
+        $schedule = DoctorSchedule::findOrFail($id);
+        return view('admin.edit-schedule', compact('schedule'));
+    }
+
+    public function updateDoctorSchedule(Request $request, $id)
+    {
+        $request->validate([
+            'day_of_week' => 'required|string',
+            'start_time' => 'required|date_format:H:i',
+            'end_time' => 'required|date_format:H:i|after:start_time',
+        ]);
+
+        $schedule = DoctorSchedule::findOrFail($id);
+        $schedule->update([
+            'day_of_week' => $request->day_of_week,
+            'start_time' => $request->start_time,
+            'end_time' => $request->end_time,
+        ]);
+
+        return redirect()->route('admin.schedule.manage')->with('success', 'Schedule updated successfully.');
+    }
 }
