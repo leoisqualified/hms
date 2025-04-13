@@ -16,7 +16,7 @@ class ReceptionistController extends Controller
 {
     public function dashboard()
     {
-        $patients = User::where('role', 'patient')->paginate(10);
+        $patients = User::where('role', 'patient')->with('patient')->paginate(10);
         return view('receptionist.dashboard', compact('patients'));
     }
 

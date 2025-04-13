@@ -82,6 +82,7 @@ Route::middleware(['auth', 'role:patient'])->group(function () {
     Route::get('/patient/dashboard', [PatientController::class, 'dashboard'])->name('patient.dashboard');
     Route::get('/patient/medications', [PatientController::class, 'medications'])->name('patient.medications');
     Route::get('/patient/appointments', [PatientController::class, 'appointments'])->name('patient.appointments');
+    Route::delete('/patient/appointments/{appointment}/cancel', [PatientController::class, 'cancelAppointment'])->name('patient.cancel-appointment');
 });
 
 Route::post('/payment/checkout', [PaymentController::class, 'checkout'])->name('payment.checkout');

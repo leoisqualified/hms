@@ -16,14 +16,14 @@
                 </h2>
                 <p class="mt-1 text-sm text-gray-600">View and manage your upcoming medical appointments</p>
             </div>
-            <div class="mt-4 sm:mt-0">
+            {{-- <div class="mt-4 sm:mt-0">
                 <a href="{{ route('patient.book-appointment') }}" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                     </svg>
                     Book New Appointment
                 </a>
-            </div>
+            </div> --}}
         </div>
 
         <!-- Appointments Table -->
@@ -34,11 +34,11 @@
                 </svg>
                 <h3 class="mt-2 text-sm font-medium text-gray-900">No appointments scheduled</h3>
                 <p class="mt-1 text-sm text-gray-500">You currently have no upcoming appointments.</p>
-                <div class="mt-6">
+                {{-- <div class="mt-6">
                     <a href="{{ route('patient.book-appointment') }}" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                         Book Your First Appointment
                     </a>
-                </div>
+                </div> --}}
             </div>
         @else
             <div class="bg-white shadow rounded-lg overflow-hidden">

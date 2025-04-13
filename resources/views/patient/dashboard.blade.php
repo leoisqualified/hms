@@ -133,62 +133,30 @@
         </div>
 
         <!-- Recent Activity -->
-        <div class="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100">
-            <div class="px-6 py-4 border-b border-gray-200">
-                <h3 class="text-lg font-medium text-gray-900 flex items-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                    </svg>
-                    Recent Activity
-                </h3>
-            </div>
-            <div class="divide-y divide-gray-200">
-                <!-- Activity Item 1 -->
+        <div class="divide-y divide-gray-200">
+            @forelse ($activities as $activity)
                 <div class="px-6 py-4 hover:bg-gray-50 transition-colors duration-150">
                     <div class="flex items-start">
-                        <div class="flex-shrink-0 bg-blue-100 rounded-full p-2 mt-1">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                        <div class="flex-shrink-0 bg-indigo-100 rounded-full p-2 mt-1">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3" />
                             </svg>
                         </div>
                         <div class="ml-3 flex-1">
                             <div class="flex items-center justify-between">
-                                <p class="text-sm font-medium text-gray-900">Appointment confirmed</p>
-                                <span class="text-xs text-gray-500">2 days ago</span>
+                                <p class="text-sm font-medium text-gray-900">{{ $activity->action }}</p>
+                                <span class="text-xs text-gray-500">{{ $activity->created_at->diffForHumans() }}</span>
                             </div>
-                            <p class="text-sm text-gray-500 mt-1">With Dr. Smith on June 15 at 2:00 PM</p>
+                            <p class="text-sm text-gray-500 mt-1">{{ $activity->description }}</p>
                         </div>
                     </div>
                 </div>
-
-                <!-- Activity Item 2 -->
-                <div class="px-6 py-4 hover:bg-gray-50 transition-colors duration-150">
-                    <div class="flex items-start">
-                        <div class="flex-shrink-0 bg-green-100 rounded-full p-2 mt-1">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
-                            </svg>
-                        </div>
-                        <div class="ml-3 flex-1">
-                            <div class="flex items-center justify-between">
-                                <p class="text-sm font-medium text-gray-900">New prescription</p>
-                                <span class="text-xs text-gray-500">1 week ago</span>
-                            </div>
-                            <p class="text-sm text-gray-500 mt-1">Amoxicillin 500mg (2x daily for 7 days)</p>
-                        </div>
-                    </div>
+            @empty
+                <div class="px-6 py-4 text-gray-500 text-sm">
+                    No recent activity found.
                 </div>
-            </div>
-            <div class="px-6 py-4 bg-gray-50 text-center">
-                <a href="#" class="text-sm font-medium text-indigo-600 hover:text-indigo-500 inline-flex items-center">
-                    View all activity
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                    </svg>
-                </a>
-            </div>
-        </div>
+            @endforelse
+        </div>        
     </div>
 </div>
 @endsection
