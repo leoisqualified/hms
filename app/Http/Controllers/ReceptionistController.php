@@ -16,7 +16,7 @@ class ReceptionistController extends Controller
 {
     public function dashboard()
     {
-        $patients = User::where('role', 'patient')->with('patient')->paginate(10);
+        $patients = User::where('role', 'patient')->with('patientRecord')->paginate(10); 
         return view('receptionist.dashboard', compact('patients'));
     }
 
@@ -65,19 +65,24 @@ class ReceptionistController extends Controller
 
     public function assignDoctor(Request $request)
     {
+        // Validate the patient and doctor IDs only, since we will use the current date and time
         $request->validate([
-            'patient_id' => 'required|string|exists:users,patient_id',
+            'patient_id' => 'required|string|exists:patients,patient_id',
             'doctor_id' => 'required|exists:users,id',
         ]);
 
-        $patient = User::where('patient_id', $request->patient_id)->first();
+        // Retrieve the patient record
+        $patientRecord = \App\Models\Patient::where('patient_id', $request->patient_id)->first();
+        $patient = $patientRecord ? $patientRecord->user : null;
         $doctor = User::find($request->doctor_id);
 
+        // Automatically set appointment date and time to the current date and time
         Appointment::create([
             'patient_id' => $patient->id,
             'doctor_id' => $doctor->id,
-            'status' => 'checked_in',
-            'date' => now(),
+            'appointment_date' => now()->toDateString(), // Current date (YYYY-MM-DD)
+            'appointment_time' => now()->toTimeString(), // Current time (HH:mm:ss)
+            'status' => 'checked_in',  // Default status
         ]);
 
         // 📝 Log the activity

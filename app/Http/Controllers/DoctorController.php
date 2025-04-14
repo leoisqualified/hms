@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\ActivityLog; 
 use App\Models\Appointment;
 use App\Models\DoctorSchedule;
+use App\Models\Patient;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -13,13 +14,14 @@ class DoctorController extends Controller
 {
     public function dashboard()
     {
-        $appointments = Appointment::where('doctor_id', Auth::id())->with('patient')->get();
+        $appointments = Appointment::with(['patient.patientRecord'])->where('doctor_id', Auth::id())->get();
         return view('doctor.dashboard', compact('appointments'));
     }
 
     public function viewPatient($patientId)
     {
-        $patient = User::where('patient_id', $patientId)->firstOrFail();
+        $patientRecord = Patient::where('patient_id', $patientId)->firstOrFail();
+        $patient = $patientRecord->user;
         $vitals = $patient->vitals()->latest()->first();
         return view('doctor.patient', compact('patient', 'vitals'));
     }

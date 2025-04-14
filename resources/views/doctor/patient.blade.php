@@ -17,7 +17,7 @@
                         </div>
                         <div class="ml-4">
                             <h2 class="text-xl font-bold text-white">{{ $patient->name }}</h2>
-                            <p class="text-sm text-indigo-100">Patient ID: {{ $patient->patient_id }}</p>
+                            <p class="text-sm text-indigo-100">Patient ID: {{ $patient->patientRecord->patient_id }}</p>
                         </div>
                     </div>
                     <div class="bg-indigo-600 text-white px-3 py-1 rounded-full text-sm font-medium">
@@ -95,7 +95,7 @@
                     Prescribe Medication
                 </h3>
             </div>
-            <form action="{{ route('doctor.prescribe', $patient->patient_id) }}" method="POST" class="px-6 py-4">
+            <form action="{{ route('doctor.prescribe', $patient->patientRecord->patient_id ?? '') }}" method="POST" class="px-6 py-4">
                 @csrf
                 <div class="space-y-6">
                     <!-- Consultation Notes -->

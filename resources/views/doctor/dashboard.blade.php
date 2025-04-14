@@ -57,12 +57,12 @@
                                     <div class="ml-4">
                                         <h3 class="text-lg font-medium text-gray-900">{{ $appointment->patient->name }}</h3>
                                         <div class="mt-1 flex flex-wrap items-center text-sm text-gray-500">
-                                            <span class="mr-3">ID: {{ $appointment->patient->patient_id }}</span>
+                                            <span class="mr-3">ID: {{ $appointment->patient->patientRecord->patient_id ?? 'N/A' }}</span>
                                             <span class="mr-3 flex items-center">
                                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                                 </svg>
-                                                {{ $appointment->appointment_time->format('g:i A') }}
+                                                {{ $appointment->appointment_time ? \Carbon\Carbon::parse($appointment->appointment_time)->format('g:i A') : 'N/A' }}
                                             </span>
                                             <span class="flex items-center">
                                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -74,8 +74,11 @@
                                         </div>
                                     </div>
                                 </div>
+                                @php
+                                    $patientId = optional($appointment->patient->patientRecord)->patient_id;
+                                @endphp
                                 <div class="mt-4 sm:mt-0">
-                                    <a href="{{ route('doctor.view-patient', $appointment->patient->patient_id) }}" 
+                                    <a href="{{ route('doctor.view-patient', ['patientId' => $appointment->patient->patientRecord->patient_id]) }}"
                                        class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors duration-200">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />

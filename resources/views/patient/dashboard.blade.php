@@ -29,8 +29,8 @@
                             <h2 class="text-3xl font-bold text-white">Welcome, {{ Auth::user()->name }}</h2>
                             <div class="mt-2 flex flex-wrap gap-4">
                                 <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-white bg-opacity-20 text-white">
-                                    Patient ID: {{ optional(Auth::user()->patient)->patient_id ?? 'N/A' }}
-                                </span>
+                                    Patient ID: {{ optional(Auth::user()->patientRecord)->patient_id ?? 'N/A' }}
+                                </span>                                
                                 <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-white bg-opacity-20 text-white">
                                     Member since {{ Auth::user()->created_at->format('M Y') }}
                                 </span>
