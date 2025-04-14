@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Patient;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
@@ -16,9 +17,21 @@ class NurseController extends Controller
     public function searchPatient(Request $request)
     {
         $request->validate(['patient_id' => 'required|string']);
-        $patient = User::where('patient_id', $request->patient_id)->first();
-        return $patient ? view('nurse.record-vitals', compact('patient')) :
-                          redirect()->back()->withErrors(['not_found' => 'Patient not found']);
+
+        // Find the patient record from the 'patients' table
+        $patientRecord = Patient::where('patient_id', $request->patient_id)->first();
+
+        if (!$patientRecord || !$patientRecord->user) {
+            return redirect()->back()->withErrors(['not_found' => 'Patient not found']);
+        }
+
+        // Get the actual User model through the relationship
+        $patient = $patientRecord->user;
+
+        // Get the latest vitals for this patient (if any)
+        $lastVitals = $patient->vitals()->latest()->first();
+
+        return view('nurse.record-vitals', compact('patient', 'lastVitals'));
     }
 
     public function storeVitals(Request $request, $patientId)
@@ -40,6 +53,19 @@ class NurseController extends Controller
             'weight' => $request->weight,
         ]);
 
-        return redirect()->route('nurse.dashboard')->with('success', 'Vitals recorded.');
+        return redirect()->route('nurse.find-patient')->with('success', 'Vitals recorded.');
+    }
+
+    public function searchPatientForm()
+    {
+        return view('nurse.search-patient'); // create this Blade file next
+    }
+
+    public function showVitals($patientId)
+    {
+        $patient = User::where('patient_id', $patientId)->firstOrFail();
+        $vitals = $patient->vitals()->latest()->get();
+
+        return view('nurse.view-vitals', compact('patient', 'vitals'));
     }
 }

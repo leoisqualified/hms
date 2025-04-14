@@ -57,8 +57,9 @@ Route::middleware(['auth', 'role:receptionist'])->group(function () {
 Route::middleware(['auth', 'role:nurse'])->group(function () {
     Route::get('/nurse/dashboard', [NurseController::class, 'dashboard'])->name('nurse.dashboard');
     Route::post('/nurse/find-patient', [NurseController::class, 'searchPatient'])->name('nurse.find-patient');
-    Route::get('/nurse/find-patient', [NurseController::class, 'searchPatient'])->name('nurse.find-patient');
+    Route::get('/nurse/find-patient', [NurseController::class, 'searchPatientForm'])->name('nurse.find-patient');
     Route::post('/nurse/vitals/{patientId}', [NurseController::class, 'storeVitals'])->name('nurse.store-vitals');
+    Route::get('/nurse/vitals/{patientId}', [NurseController::class, 'showVitals'])->name('nurse.vitals');
 });
 
 // Doctor Routes

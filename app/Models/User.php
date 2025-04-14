@@ -54,8 +54,9 @@ class User extends Authenticatable
 
     public function vitals()
     {
-        return $this->hasMany(Vitals::class, 'patient_id');
+        return $this->hasMany(Vitals::class, 'patient_id', 'patient_id');
     }
+
 
     public function prescriptions()
     {
