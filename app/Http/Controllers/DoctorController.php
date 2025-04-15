@@ -23,50 +23,60 @@ class DoctorController extends Controller
         $patientRecord = Patient::where('patient_id', $patientId)->firstOrFail();
         $patient = $patientRecord->user;
         $vitals = $patient->vitals()->latest()->first();
-        return view('doctor.patient', compact('patient', 'vitals'));
+
+        return view('doctor.patient', [
+            'patient' => $patient,
+            'vitals' => $vitals,
+            'patient_id' => $patientId, // pass the ID from the route directly
+        ]);
     }
+
 
     public function prescribe(Request $request, $patientId)
     {
-    $request->validate([
-        'notes' => 'required|string',
-        'medications' => 'required|array',
-        'medications.*.name' => 'required|string',
-        'medications.*.dosage' => 'required|string',
-    ]);
+        $request->validate([
+            'notes' => 'required|string',
+            'medications' => 'required|array',
+            'medications.*.medication_name' => 'required|string',  // Fix: medication_name instead of name
+            'medications.*.dosage' => 'required|string',
+        ]);
 
-    $doctor = Auth::user();
-    $patient = User::where('patient_id', $patientId)->firstOrFail();
+        $doctor = Auth::user();
 
-    $prescription = $patient->prescriptions()->create([
-        'doctor_id' => $doctor->id,
-        'notes' => $request->notes,
-    ]);
+        // 🔥 FIXED HERE
+        $patientRecord = Patient::where('patient_id', $patientId)->firstOrFail();
+        $patient = $patientRecord->user;
 
-    foreach ($request->medications as $med) {
-        $prescription->medications()->create($med);
+        $prescription = $patient->prescriptions()->create([
+            'doctor_id' => $doctor->id,
+            'notes' => $request->notes,
+        ]);
+
+        // dd($request->medications);
+
+        foreach ($request->medications as $med) {
+            $prescription->medications()->create($med);
+        }
+
+        $appointment = Appointment::where('doctor_id', $doctor->id)
+            ->where('patient_id', $patient->id)
+            ->latest()
+            ->first();
+
+        if ($appointment) {
+            $appointment->status = 'completed';
+            $appointment->save();
+        }
+
+        ActivityLog::create([
+            'user_id' => $doctor->id,
+            'action' => 'Completed appointment',
+            'description' => 'Completed appointment and prescribed medication for patient ' . $patient->name . ' (' . $patientRecord->patient_id . ')',
+        ]);
+
+        return redirect()->route('doctor.dashboard')->with('success', 'Prescription saved.');
     }
 
-    // ✅ Mark the latest appointment as completed (you could fine-tune this further if needed)
-    $appointment = Appointment::where('doctor_id', $doctor->id)
-        ->where('patient_id', $patient->id)
-        ->latest()
-        ->first();
-
-    if ($appointment) {
-        $appointment->status = 'completed';
-        $appointment->save();
-    }
-
-    // 📝 Log the action
-    ActivityLog::create([
-        'user_id' => $doctor->id,
-        'action' => 'Completed appointment',
-        'description' => 'Completed appointment and prescribed medication for patient ' . $patient->name . ' (' . $patient->patient_id . ')',
-    ]);
-
-    return redirect()->route('doctor.dashboard')->with('success', 'Prescription saved.');
-    }
 
     public function mySchedules()
     {

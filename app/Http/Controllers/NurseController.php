@@ -43,7 +43,9 @@ class NurseController extends Controller
             'weight' => 'required|numeric',
         ]);
 
-        $patient = User::where('patient_id', $patientId)->firstOrFail();
+        // Get the actual user via the Patient record
+        $patientRecord = Patient::where('patient_id', $patientId)->firstOrFail();
+        $patient = $patientRecord->user;
 
         $patient->vitals()->create([
             'nurse_id' => Auth::id(),
@@ -53,9 +55,10 @@ class NurseController extends Controller
             'weight' => $request->weight,
         ]);
 
-        return redirect()->route('nurse.find-patient')->with('success', 'Vitals recorded.');
+        return redirect()->route('nurse.search-form')->with('success', 'Vitals recorded.');
     }
 
+    
     public function searchPatientForm()
     {
         return view('nurse.search-patient'); // create this Blade file next

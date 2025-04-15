@@ -20,9 +20,9 @@
                             <p class="text-sm text-indigo-100">Patient ID: {{ $patient->patientRecord->patient_id }}</p>
                         </div>
                     </div>
-                    <div class="bg-indigo-600 text-white px-3 py-1 rounded-full text-sm font-medium">
+                    {{-- <div class="bg-indigo-600 text-white px-3 py-1 rounded-full text-sm font-medium">
                         {{ $patient->age }} years
-                    </div>
+                    </div> --}}
                 </div>
             </div>
             <div class="px-6 py-4 bg-white">
@@ -95,7 +95,7 @@
                     Prescribe Medication
                 </h3>
             </div>
-            <form action="{{ route('doctor.prescribe', $patient->patientRecord->patient_id ?? '') }}" method="POST" class="px-6 py-4">
+            <form action="{{ route('doctor.prescribe', $patient_id) }}" method="POST" class="px-6 py-4">
                 @csrf
                 <div class="space-y-6">
                     <!-- Consultation Notes -->
@@ -115,7 +115,7 @@
                                 <label class="block text-sm font-medium text-gray-700">Medication #1</label>
                                 <div class="mt-1 grid grid-cols-1 sm:grid-cols-2 gap-4">
                                     <div>
-                                        <input type="text" name="medications[0][name]" placeholder="Medication Name" 
+                                        <input type="text" name="medications[0][medication_name]" placeholder="Medication Name" 
                                                class="focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-4 pr-12 py-3 sm:text-sm border-gray-300 rounded-md border"
                                                required>
                                     </div>
@@ -164,7 +164,7 @@
             <label class="block text-sm font-medium text-gray-700">Medication #${medIndex + 1}</label>
             <div class="mt-1 grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                    <input type="text" name="medications[${medIndex}][name]" placeholder="Medication Name" 
+                    <input type="text" name="medications[${medIndex}][medication_name]" placeholder="Medication Name" 
                            class="focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-4 pr-12 py-3 sm:text-sm border-gray-300 rounded-md border"
                            required>
                 </div>

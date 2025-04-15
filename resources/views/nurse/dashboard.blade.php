@@ -46,7 +46,7 @@
 
         <!-- Quick Actions -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-            <a href="{{ route('nurse.find-patient') }}" class="bg-white rounded-xl shadow-md overflow-hidden border border-gray-200 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
+            <a href="{{ route('nurse.search-form') }}" class="bg-white rounded-xl shadow-md overflow-hidden border border-gray-200 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
                 <div class="p-6 flex items-center">
                     <div class="bg-blue-100 p-3 rounded-lg mr-4">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
