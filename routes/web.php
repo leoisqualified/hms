@@ -70,14 +70,16 @@ Route::middleware(['auth', 'role:doctor'])->group(function () {
     Route::get('/doctor/schedules', [DoctorController::class, 'mySchedules'])->name('doctor.schedules');
 });
 
-
 // Pharmacist Routes
-Route::middleware(['auth', 'role:pharmacist'])->group(function () {
-    Route::get('/pharmacist/dashboard', [PharmacistController::class, 'dashboard'])->name('pharmacist.dashboard');
-    Route::get('/pharmacist/verify-patient', [PharmacistController::class, 'verifyPatient'])->name('pharmacist.verify-patient');
-    Route::get('/pharmacist/verify-patient', [PharmacistController::class, 'verifyPatient'])->name('pharmacist.verify-patient');
-    Route::post('/pharmacist/dispense/{prescriptionId}', [PharmacistController::class, 'markAsDispensed'])->name('pharmacist.dispense');
+Route::middleware(['auth', 'role:pharmacist'])->prefix('pharmacist')->name('pharmacist.')->group(function () {
+    Route::get('/dashboard', [PharmacistController::class, 'dashboard'])->name('dashboard');
+    Route::get('/verify', [PharmacistController::class, 'showVerifyForm'])->name('verify');
+    Route::post('/verify', [PharmacistController::class, 'verifyPatient']);
+    Route::get('/patient/{patient_id}', [PharmacistController::class, 'viewPatient'])->name('patient');
+    Route::post('/medication/{medication}/price', [PharmacistController::class, 'storePrice'])->name('price');
+    Route::post('/prescription/{prescription}/dispense', [PharmacistController::class, 'dispense'])->name('dispense');
 });
+
 
 // Patient Routes
 Route::middleware(['auth', 'role:patient'])->group(function () {

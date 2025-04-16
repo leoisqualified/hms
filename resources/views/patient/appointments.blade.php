@@ -57,9 +57,13 @@
                             @foreach ($appointments as $appointment)
                             <tr class="hover:bg-gray-50 transition-colors duration-150">
                                 <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="text-sm font-medium text-gray-900">{{ $appointment->date->format('M d, Y') }}</div>
-                                    <div class="text-sm text-gray-500">{{ $appointment->date->format('h:i A') }}</div>
-                                </td>
+                                    @if ($appointment->date)
+                                        <div class="text-sm font-medium text-gray-900">{{ $appointment->date->format('M d, Y') }}</div>
+                                        <div class="text-sm text-gray-500">{{ $appointment->date->format('h:i A') }}</div>
+                                    @else
+                                        <div class="text-sm text-gray-500 italic">Not set</div>
+                                    @endif
+                                </td>                                
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="flex items-center">
                                         <div class="flex-shrink-0 h-10 w-10 rounded-full bg-indigo-100 flex items-center justify-center">
@@ -68,8 +72,8 @@
                                             </svg>
                                         </div>
                                         <div class="ml-4">
-                                            <div class="text-sm font-medium text-gray-900">{{ $appointment->doctor->name }}</div>
-                                            <div class="text-sm text-gray-500">{{ $appointment->doctor->specialization }}</div>
+                                            <div class="text-sm font-medium text-gray-900">{{ $appointment->doctor->name ?? 'N/A' }}</div>
+                                            <div class="text-sm text-gray-500">{{ $appointment->doctor->specialization ?? 'Unknown' }}</div>
                                         </div>
                                     </div>
                                 </td>

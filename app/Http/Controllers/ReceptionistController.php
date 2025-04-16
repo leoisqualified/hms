@@ -6,6 +6,7 @@ use App\Mail\SendCredentialsMail;
 use App\Models\ActivityLog;
 use App\Models\Appointment;
 use App\Models\User;
+use App\Models\Patient;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
@@ -72,18 +73,18 @@ class ReceptionistController extends Controller
         ]);
 
         // Retrieve the patient record
-        $patientRecord = \App\Models\Patient::where('patient_id', $request->patient_id)->first();
+        $patientRecord = Patient::where('patient_id', $request->patient_id)->first();
         $patient = $patientRecord ? $patientRecord->user : null;
         $doctor = User::find($request->doctor_id);
 
         // Automatically set appointment date and time to the current date and time
         Appointment::create([
-            'patient_id' => $patient->id,
+            'patient_id' => $patientRecord->id,  // Use the patient record's ID (not the user's ID)
             'doctor_id' => $doctor->id,
-            'appointment_date' => now()->toDateString(), // Current date (YYYY-MM-DD)
-            'appointment_time' => now()->toTimeString(), // Current time (HH:mm:ss)
-            'status' => 'checked_in',  // Default status
-        ]);
+            'appointment_date' => now()->toDateString(),
+            'appointment_time' => now()->toTimeString(),
+            'status' => 'checked_in',
+        ]);        
 
         // 📝 Log the activity
         ActivityLog::create([
