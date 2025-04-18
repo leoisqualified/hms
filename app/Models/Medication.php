@@ -8,7 +8,10 @@ class Medication extends Model
 {
 
     protected $fillable = [
-        'medication_name', 'dosage', 'prescription_id'
+        'medication_name', 
+        'dosage', 
+        'prescription_id', 
+        'price'
     ];
 
     public function prescription()
