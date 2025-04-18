@@ -5,61 +5,63 @@ namespace App\Http\Controllers;
 use App\Models\Prescription;
 use App\Models\Medication;
 use App\Models\User;
-use App\Models\Payment; // Assuming you have a Payment model for storing payments
+use App\Models\Patient;
+use App\Models\Payment;
 use Illuminate\Http\Request;
 
 class PharmacistController extends Controller
 {
     public function dashboard()
-{
-    return view('pharmacist.dashboard');
-}
-
-public function showVerifyForm()
-{
-    return view('pharmacist.verify');
-}
-
-public function verifyPatient(Request $request)
-{
-    $request->validate([
-        'patient_id' => 'required|string',
-    ]);
-
-    $patient = User::where('patient_id', $request->patient_id)->first();
-
-    if (!$patient) {
-        return back()->withErrors(['patient_id' => 'Patient not found']);
+    {
+        return view('pharmacist.dashboard');
     }
 
-    return redirect()->route('pharmacist.patient', $patient->patient_id);
-}
+    public function showVerifyForm()
+    {
+        return view('pharmacist.verify');
+    }
 
-public function viewPatient($patient_id)
-{
-    $patient = User::where('patient_id', $patient_id)->firstOrFail();
-    $prescriptions = $patient->prescriptions()->with('medications')->where('status', '!=', 'dispensed')->get();
-    $payment = $patient->payments()->latest()->first();
+    public function verifyPatient(Request $request)
+    {
+        $request->validate([
+            'patient_id' => 'required|string',
+        ]);
 
-    return view('pharmacist.patient-details', compact('patient', 'prescriptions', 'payment'));
-}
+        $patientRecord = Patient::where('patient_id', $request->patient_id)->first();
 
-public function storePrice(Request $request, Medication $medication)
-{
-    $request->validate([
-        'price' => 'required|numeric|min:0.01',
-    ]);
+        if (!$patientRecord || !$patientRecord->user) {
+            return back()->withErrors(['patient_id' => 'Patient not found']);
+        }
 
-    $medication->update(['price' => $request->price]);
+        return redirect()->route('pharmacist.patient', $request->patient_id);
+    }
 
-    return back()->with('success', 'Price set successfully.');
-}
+    public function viewPatient($patient_id)
+    {
+        $patientRecord = Patient::where('patient_id', $patient_id)->firstOrFail();
+        $patient = $patientRecord->user;
 
-public function dispense(Prescription $prescription)
-{
-    $prescription->update(['status' => 'dispensed']);
+        $prescriptions = $patient->prescriptions()->with('medications')->where('status', '!=', 'dispensed')->get();
+        $payment = $patient->payments()->latest()->first();
 
-    return back()->with('success', 'Prescription dispensed.');
-}
+        return view('pharmacist.patient-details', compact('patient', 'prescriptions', 'payment'));
+    }
 
+    public function storePrice(Request $request, Medication $medication)
+    {
+        $request->validate([
+            'price' => 'required|numeric|min:0.01',
+        ]);
+
+        $medication->update(['price' => $request->price]);
+
+        return back()->with('success', 'Price set successfully.');
+    }
+
+    public function dispense(Prescription $prescription)
+    {
+        $prescription->update(['status' => 'dispensed']);
+
+        return back()->with('success', 'Prescription dispensed.');
+    }
 }

@@ -3,7 +3,7 @@
             <!-- Logo with better responsive sizing -->
             <div class="flex justify-center">
                 <img 
-                    src="{{ asset('hospital_logo.jpg') }}" 
+                    src="{{ asset('hospital-logo.jpg') }}" 
                     alt="Hospital Management System Logo" 
                     class="h-[1000px] sm:h-14 w-auto"
                     loading="lazy"

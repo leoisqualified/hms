@@ -22,7 +22,7 @@
                         </div>
                         <h2 class="text-xl font-semibold text-gray-800">Patient Verification</h2>
                     </div>
-                    <p class="text-gray-600 mb-6">Verify patient identity and view their prescription history.</p>
+                    <p class="text-gray-600 mb-6">Verify patient identity and view their prescriptions.</p>
                     <a href="{{ route('pharmacist.verify') }}" class="block w-full px-4 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white text-center font-medium rounded-lg hover:from-blue-700 hover:to-blue-800 transition-all duration-300 transform hover:-translate-y-0.5 shadow-md">
                         Verify Patient
                     </a>

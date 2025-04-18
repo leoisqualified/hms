@@ -58,10 +58,11 @@
                                         </div>
                                         <div class="ml-4">
                                             <div class="text-sm font-medium text-gray-900">{{ $med->medication_name }}</div>
-                                            <input type="number" name="amount" step="0.01" required
-                                            class="border rounded px-2 py-1 text-sm text-gray-700"
-                                            placeholder="Enter medicine amount ">
-                                        </div>
+                                            <div class="text-sm text-gray-700 mt-1">
+                                                <strong>Price:</strong> 
+                                                {{ $med->price ? '₦' . number_format($med->price, 2) : 'Price not set yet' }}
+                                            </div>
+                                        </div>                                        
                                     </div>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
