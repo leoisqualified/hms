@@ -60,7 +60,7 @@
                                             <div class="text-sm font-medium text-gray-900">{{ $med->medication_name }}</div>
                                             <div class="text-sm text-gray-700 mt-1">
                                                 <strong>Price:</strong> 
-                                                {{ $med->price ? '₦' . number_format($med->price, 2) : 'Price not set yet' }}
+                                                {{ $med->price ? '$' . number_format($med->price, 2) : 'Price not set yet' }}
                                             </div>
                                         </div>                                        
                                     </div>
