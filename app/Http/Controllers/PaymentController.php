@@ -22,15 +22,21 @@ class PaymentController extends Controller
                 'quantity' => 1,
             ]],
             'mode' => 'payment',
-            'success_url' => route('payment.success'),
+            'success_url' => route('payment.success', ['med_id' => $request->med_id]), // <- include ID
             'cancel_url' => route('payment.cancel'),
         ]);
 
         return redirect($session->url);
     }
 
-    public function success()
+    public function success(Request $request)
     {
+        $medicationId = $request->query('med_id');
+
+        if ($medicationId) {
+            \App\Models\Medication::where('id', $medicationId)->update(['is_paid' => true]);
+        }
+
         return view('patient.payment-success');
     }
 

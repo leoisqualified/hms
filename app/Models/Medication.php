@@ -11,7 +11,8 @@ class Medication extends Model
         'medication_name', 
         'dosage', 
         'prescription_id', 
-        'price'
+        'price',
+        'is_paid'
     ];
 
     public function prescription()
