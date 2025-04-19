@@ -19,5 +19,4 @@ class Medication extends Model
     {
         return $this->belongsTo(Prescription::class);
     }
-
 }

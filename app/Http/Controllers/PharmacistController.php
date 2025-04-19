@@ -60,19 +60,15 @@ class PharmacistController extends Controller
 
     public function dispense(Prescription $prescription)
     {
-        if (!$prescription->user) {
-            return back()->with('error', 'No user found for this prescription.');
-        }
-
         $prescription->update(['status' => 'dispensed']);
 
-        if (!$prescription->user->patientRecord) {
-            return back()->with('error', 'No patient record found for this user.');
-        }
+        // Confirm status was saved
+        // dd($prescription->fresh()->status); // should say 'dispensed'
+        
+        // $prescription->refresh();
 
         $patientId = $prescription->patient->patientRecord->patient_id;
 
-        // Redirect back to the patient's view page with the updated list of prescriptions
         return redirect()->route('pharmacist.patient', $patientId)
                         ->with('success', 'Prescription dispensed.');
     }

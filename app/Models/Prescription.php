@@ -10,6 +10,7 @@ class Prescription extends Model
     protected $fillable = [
         'doctor_id',
         'notes',
+        'status'
     ];
     
     public function patient()
