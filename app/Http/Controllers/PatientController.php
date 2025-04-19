@@ -27,7 +27,7 @@ class PatientController extends Controller
 
         // Only count scheduled appointments
         $appointmentsCount = $user->appointments()
-                                ->where('status', 'scheduled')
+                                ->where('status', 'checked_in')
                                 ->count();
 
         // Fetch recent activity logs

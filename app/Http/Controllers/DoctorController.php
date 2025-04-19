@@ -14,11 +14,13 @@ class DoctorController extends Controller
 {
     public function dashboard()
     {
-        $appointments = Appointment::with(['patient.patientRecord'])
+        $appointments = Appointment::with('patient') // patient is now a User
             ->where('doctor_id', Auth::id())
-            ->where('status', 'pending') // or whatever your active status is
+            ->where('status',  'checked_in')
             ->get();
-            
+
+        // dd(Auth::id(), $appointments);
+
         return view('doctor.dashboard', compact('appointments'));
     }
 

@@ -33,9 +33,9 @@ class ReceptionistController extends Controller
             'email' => 'required|email|unique:users',
         ]);
 
-        $password = Str::random(8);
+        $password = Str::random(8); // You can make this more readable if needed
 
-        // First create the user
+        // 1. Create the User
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
@@ -43,63 +43,68 @@ class ReceptionistController extends Controller
             'password' => Hash::make($password),
         ]);
 
-        // Now create the patient record with generated patient_id
+        // 2. Create the Patient record
         $patientId = 'PT-' . strtoupper(Str::random(6));
-        $user->patient()->create([
+
+        $patient = Patient::create([
+            'user_id' => $user->id,
             'patient_id' => $patientId,
-            // Add any additional fields required in the 'patients' table
+            // add other fields like 'medical_history' => $request->input('medical_history') if needed
         ]);
 
-        // Send credentials to patient
+        // 3. Send credentials email
         Mail::to($user->email)->send(new SendCredentialsMail($user->email, $password));
 
-        // Log the activity
+        // 4. Log activity
         ActivityLog::create([
             'user_id' => Auth::id(),
             'action' => 'Registered a new patient',
             'description' => 'Registered patient ' . $user->name . ' (ID: ' . $patientId . ')',
         ]);
 
+        // 5. Return success
         return redirect()->back()->with('success', 'Patient registered successfully with ID: ' . $patientId);
-    }
 
+        // Optional: Uncomment to debug
+        // dd(['user' => $user, 'patient' => $patient]);
+    }
 
     public function assignDoctor(Request $request)
     {
-        // Validate the patient and doctor IDs only, since we will use the current date and time
         $request->validate([
             'patient_id' => 'required|string|exists:patients,patient_id',
             'doctor_id' => 'required|exists:users,id',
         ]);
 
-        // Retrieve the patient record
         $patientRecord = Patient::where('patient_id', $request->patient_id)->first();
         $patient = $patientRecord ? $patientRecord->user : null;
         $doctor = User::find($request->doctor_id);
 
-        // Automatically set appointment date and time to the current date and time
+        // This line won't be reached until you remove dd()
         Appointment::create([
-            'patient_id' => $patientRecord->id,  // Use the patient record's ID (not the user's ID)
+            'patient_id' => $patientRecord->user_id,
             'doctor_id' => $doctor->id,
             'appointment_date' => now()->toDateString(),
             'appointment_time' => now()->toTimeString(),
             'status' => 'checked_in',
-        ]);        
+        ]);
 
-        // 📝 Log the activity
         ActivityLog::create([
             'user_id' => Auth::id(),
             'action' => 'Assigned doctor to patient',
             'description' => 'Assigned Dr. ' . $doctor->name . ' to patient ' . $patient->name . ' (' . $patient->patient_id . ')',
         ]);
 
+        // $latestAppointment = Appointment::latest()->first();
+        // dd($latestAppointment);
+
         return redirect()->back()->with('success', 'Patient checked in and assigned to doctor.');
     }
 
     public function viewHistory($patientId)
     {
-        $patient = User::where('patient_id', $patientId)->firstOrFail();
-        $appointments = $patient->appointments()->with('doctor')->get();
-        return view('receptionist.history', compact('patient', 'appointments'));
+        $patientRecord = Patient::where('patient_id', $patientId)->firstOrFail();
+        $patient = $patientRecord->user;
+        return view('receptionist.history', compact('patient', 'patientRecord'));
     }
 }
