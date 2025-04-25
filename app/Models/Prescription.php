@@ -27,4 +27,10 @@ class Prescription extends Model
     {
         return $this->hasMany(Medication::class);
     }
+
+    public function dispensation()
+    {
+        return $this->hasOne(Dispensation::class);
+    }
+
 }
