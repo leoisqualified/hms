@@ -132,6 +132,29 @@
             </div>
         </div>
 
+        <!-- Medical History Card -->
+        <div class="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100 hover:shadow-xl transition-shadow duration-300">
+            <div class="px-6 py-5">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0 bg-red-100 rounded-xl p-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-3-3v6m6 4a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </div>
+                    <div class="ml-5">
+                        <h3 class="text-lg font-medium text-gray-900">Medical History</h3>
+                        <p class="mt-1 text-3xl font-semibold text-gray-900">{{ $medicalHistoryCount ?? 0 }}</p>
+                        <a href="{{ route('patient.medical_history') }}" class="mt-2 inline-flex items-center text-sm font-medium text-red-600 hover:text-red-500">
+                            View medical history
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- Recent Activity -->
         <div class="divide-y divide-gray-200">
             @forelse ($activities as $activity)

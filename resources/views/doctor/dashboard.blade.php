@@ -86,6 +86,16 @@
                                         </svg>
                                         View Patient
                                     </a>
+
+                                    @if($appointment->patient->patientRecord)
+                                        <a href="{{ route('medical-history.show', ['patientId' => $appointment->patient->patientRecord->patient_id]) }}"
+                                        class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-teal-600 hover:bg-teal-700">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16h8M8 12h8m-8-4h8" />
+                                            </svg>
+                                            Medical History
+                                        </a>
+                                    @endif
                                 </div>
                             </div>
                         </li>

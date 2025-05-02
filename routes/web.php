@@ -22,7 +22,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::get('/medical-history/{id}', [PatientController::class, 'showMedicalHistory'])->name('medical-history.show');
 });
+
 
 // Admin Routes
 Route::middleware(['auth', 'role:admin'])->group(function () {
@@ -40,8 +42,6 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/admin/schedule/{id}/edit', [AdminController::class, 'editDoctorSchedule'])->name('admin.schedule.edit');
     Route::put('/admin/schedule/{id}', [AdminController::class, 'updateDoctorSchedule'])->name('admin.schedule.update');
     Route::get('/admin/activity-logs', [AdminController::class, 'activityLogs'])->name('admin.logs');
-
-
 });
 
 // Receptionist Routes
