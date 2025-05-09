@@ -79,6 +79,7 @@ Route::middleware(['auth', 'role:pharmacist'])->prefix('pharmacist')->name('phar
     Route::get('/patient/{patient_id}', [PharmacistController::class, 'viewPatient'])->name('patient');
     Route::post('/medication/{medication}/price', [PharmacistController::class, 'storePrice'])->name('price');
     Route::post('/prescription/{prescription}/dispense', [PharmacistController::class, 'dispense'])->name('dispense');
+    Route::get('/pharmacist/history', [PharmacistController::class, 'viewHistory'])->name('pharmacist.history');
 });
 
 

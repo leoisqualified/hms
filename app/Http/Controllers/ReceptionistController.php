@@ -103,8 +103,6 @@ class ReceptionistController extends Controller
 
     public function viewHistory($patientId)
     {
-        $patientRecord = Patient::where('patient_id', $patientId)->firstOrFail();
-        $patient = $patientRecord->user;
-        return view('receptionist.history', compact('patient', 'patientRecord'));
+        return app(MedicalHistoryController::class)->show($patientId);
     }
 }

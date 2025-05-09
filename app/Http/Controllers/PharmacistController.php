@@ -72,4 +72,16 @@ class PharmacistController extends Controller
         return redirect()->route('pharmacist.patient', $patientId)
                         ->with('success', 'Prescription dispensed.');
     }
+
+    public function viewHistory(Request $request)
+    {
+        $patientId = $request->input('patient_id');
+
+        // Optional: Validate if patient exists
+        if (!Patient::find($patientId)) {
+            return back()->with('error', 'Patient not found.');
+        }
+
+        return app(MedicalHistoryController::class)->show($patientId);
+    }
 }

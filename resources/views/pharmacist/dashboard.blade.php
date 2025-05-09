@@ -65,6 +65,30 @@
                 </div>
             </div>
 
+            <!-- View Medical History Card -->
+            <div class="bg-white rounded-xl shadow-md overflow-hidden border border-gray-100 hover:shadow-lg transition-shadow duration-300">
+                <div class="p-6">
+                    <div class="flex items-center mb-4">
+                        <div class="p-3 rounded-full bg-red-100 text-red-600 mr-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 4h10M5 11h14M5 15h14M5 19h14" />
+                            </svg>
+                        </div>
+                        <h2 class="text-xl font-semibold text-gray-800">Patient History</h2>
+                    </div>
+                    <p class="text-gray-600 mb-4">Enter a patient ID to view their medical history and prescriptions.</p>
+                    <form action="{{ route('pharmacist.history') }}" method="GET">
+                        <input type="text" name="patient_id" placeholder="Enter Patient ID"
+                            class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 mb-4">
+                        <button type="submit"
+                            class="w-full px-4 py-2 bg-gradient-to-r from-red-500 to-red-600 text-white font-semibold rounded-lg hover:from-red-600 hover:to-red-700 transition-all duration-300 shadow-md">
+                            View History
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+
             <!-- Quick Actions -->
             <div class="md:col-span-2 lg:col-span-3 bg-white rounded-xl shadow-md overflow-hidden border border-gray-100">
                 <div class="p-6">
