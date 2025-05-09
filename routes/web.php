@@ -8,6 +8,7 @@ use App\Http\Controllers\DoctorController;
 use App\Http\Controllers\PharmacistController;
 use App\Http\Controllers\PatientController;
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\MedicalHistoryController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -87,6 +88,7 @@ Route::middleware(['auth', 'role:patient'])->group(function () {
     Route::get('/patient/medications', [PatientController::class, 'medications'])->name('patient.medications');
     Route::get('/patient/appointments', [PatientController::class, 'appointments'])->name('patient.appointments');
     Route::delete('/patient/appointments/{appointment}/cancel', [PatientController::class, 'cancelAppointment'])->name('patient.cancel-appointment');
+    Route::get('/my-medical-history', [MedicalHistoryController::class, 'myHistory'])->name('patient.medical_history');
 });
 
 Route::post('/payment/checkout', [PaymentController::class, 'checkout'])->name('payment.checkout');

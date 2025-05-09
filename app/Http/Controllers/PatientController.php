@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\ActivityLog;
 use App\Models\Appointment;
 use App\Models\Medication;
+use App\Models\Vitals;
+use App\Models\Prescription;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -36,7 +38,11 @@ class PatientController extends Controller
                         ->take(5)
                         ->get();
 
-        return view('patient.dashboard', compact('patient', 'activities', 'appointmentsCount', 'medicationsCount'));
+        $medicalHistoryCount = Appointment::where('patient_id', $user->id)->count()
+        + Vitals::where('patient_id', $user->id)->count()
+        + Prescription::where('patient_id', $user->id)->count();
+
+        return view('patient.dashboard', compact('patient', 'activities', 'appointmentsCount', 'medicationsCount', 'medicalHistoryCount'));
     }
 
 

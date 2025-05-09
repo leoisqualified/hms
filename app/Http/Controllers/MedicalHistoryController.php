@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Patient;
 use App\Models\Appointment;
 use App\Models\Vitals;
@@ -47,6 +48,48 @@ class MedicalHistoryController extends Controller
 
         return view('medical-history.show', compact(
             'patient',
+            'patientRecord',
+            'appointments',
+            'vitals',
+            'prescriptions',
+            'dispensations'
+        ));
+    }
+
+    public function myHistory()
+    {
+        $user = Auth::user();
+
+        $patientRecord = $user->patientRecord;
+
+        if (!$patientRecord) {
+            abort(404, 'Patient record not found.');
+        }
+
+        $appointments = Appointment::with('doctor')
+            ->where('patient_id', $user->id)
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        $vitals = Vitals::with('nurse')
+            ->where('patient_id', $user->id)
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        $prescriptions = Prescription::with(['doctor', 'medications'])
+            ->where('patient_id', $user->id)
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        $dispensations = Dispensation::with(['pharmacist', 'prescription'])
+            ->whereHas('prescription', function ($q) use ($user) {
+                $q->where('patient_id', $user->id);
+            })
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return view('medical-history.show', compact(
+            'user',
             'patientRecord',
             'appointments',
             'vitals',
