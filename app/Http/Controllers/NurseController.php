@@ -37,10 +37,11 @@ class NurseController extends Controller
     public function storeVitals(Request $request, $patientId)
     {
         $request->validate([
-            'temperature' => 'required|numeric',
-            'blood_pressure' => 'required|string',
-            'pulse' => 'required|integer',
-            'weight' => 'required|numeric',
+            'temperature' => 'required|numeric|between:30,45',
+            'blood_pressure' => ['required', 'regex:/^\d{2,3}\/\d{2,3}$/'],
+            'pulse' => 'required|integer|between:30,200',
+            'weight' => 'required|numeric|between:2,500',
+            'notes' => 'nullable|string|max:500',
         ]);
 
         // Get the actual user via the Patient record
@@ -55,7 +56,7 @@ class NurseController extends Controller
             'weight' => $request->weight,
         ]);
 
-        return redirect()->route('nurse.search-form')->with('success', 'Vitals recorded.');
+        return back()->with('success', 'Vitals recorded.');
     }
 
     

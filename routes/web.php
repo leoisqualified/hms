@@ -61,6 +61,8 @@ Route::middleware(['auth', 'role:nurse'])->group(function () {
     Route::get('/nurse/find-patient', [NurseController::class, 'searchPatientForm'])->name('nurse.search-form');
     Route::post('/nurse/vitals/{patientId}', [NurseController::class, 'storeVitals'])->name('nurse.store-vitals');
     Route::get('/nurse/vitals/{patientId}', [NurseController::class, 'showVitals'])->name('nurse.vitals');
+    Route::get('/nurse/medical-history/{patientId}/partial', [MedicalHistoryController::class, 'partialView'])
+    ->name('nurse.medical-history.partial');
 });
 
 // Doctor Routes

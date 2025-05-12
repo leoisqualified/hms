@@ -38,6 +38,40 @@
             </div>
         </div>
 
+        <div class="mt-6 mb-6">
+            <button id="toggleHistory" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition">
+                View Medical History
+            </button>
+        
+            <div id="historySection" class="mt-4 hidden">
+                <div id="historyLoader" class="text-gray-500">Loading medical history...</div>
+                <div id="historyContent" class="hidden"></div>
+            </div>
+        </div>
+        
+        <script>
+            document.getElementById('toggleHistory').addEventListener('click', function () {
+                const section = document.getElementById('historySection');
+                const loader = document.getElementById('historyLoader');
+                const content = document.getElementById('historyContent');
+        
+                if (section.classList.contains('hidden')) {
+                    section.classList.remove('hidden');
+        
+                    fetch("{{ route('nurse.medical-history.partial', ['patientId' => $patient->patientRecord->patient_id]) }}")
+                        .then(response => response.text())
+                        .then(html => {
+                            loader.classList.add('hidden');
+                            content.innerHTML = html;
+                            content.classList.remove('hidden');
+                        });
+                } else {
+                    section.classList.add('hidden');
+                }
+            });
+        </script>
+
+
         <!-- Vitals Form -->
         <div class="bg-white shadow rounded-lg overflow-hidden">
             <div class="px-6 py-4 border-b border-gray-200 bg-gray-50">
@@ -48,6 +82,29 @@
                     Vital Signs
                 </h3>
             </div>
+
+            @if ($errors->any())
+                <div class="mb-6 p-4 bg-red-50 border-l-4 border-red-500 rounded-r-lg shadow-sm">
+                    <div class="flex items-start">
+                        <div class="flex-shrink-0">
+                            <svg class="h-5 w-5 text-red-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+                            </svg>
+                        </div>
+                        <div class="ml-3">
+                            <h3 class="text-sm font-medium text-red-800">Please correct the following errors:</h3>
+                            <div class="mt-2 text-sm text-red-700">
+                                <ul class="list-disc list-inside space-y-1">
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @endif
+
             <form action="{{ route('nurse.store-vitals', $patient->patientRecord->patient_id) }}" method="POST" class="px-6 py-4">
                 @csrf
                 
@@ -57,8 +114,9 @@
                         <label for="temperature" class="block text-sm font-medium text-gray-700">Temperature (°C)</label>
                         <div class="mt-1 relative rounded-md shadow-sm">
                             <input type="number" name="temperature" id="temperature" step="0.1" required
-                                   class="focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-4 pr-12 py-3 sm:text-sm border-gray-300 rounded-md border"
-                                   placeholder="36.5 - 37.5">
+                                value="{{ old('temperature', $lastVitals->temperature ?? '') }}"
+                                class="focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-4 pr-12 py-3 sm:text-sm border-gray-300 rounded-md border"
+                            placeholder="36.5 - 37.5">
                             <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
                                 <span class="text-gray-500 sm:text-sm">°C</span>
                             </div>
@@ -71,8 +129,9 @@
                         <label for="blood_pressure" class="block text-sm font-medium text-gray-700">Blood Pressure</label>
                         <div class="mt-1 relative rounded-md shadow-sm">
                             <input type="text" name="blood_pressure" id="blood_pressure" required
-                                   class="focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-4 pr-12 py-3 sm:text-sm border-gray-300 rounded-md border"
-                                   placeholder="120/80">
+                            value="{{ old('blood_pressure', $lastVitals->blood_pressure ?? '') }}"
+                            class="focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-4 pr-12 py-3 sm:text-sm border-gray-300 rounded-md border"
+                            placeholder="120/80">
                             <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
                                 <span class="text-gray-500 sm:text-sm">mmHg</span>
                             </div>
@@ -85,8 +144,9 @@
                         <label for="pulse" class="block text-sm font-medium text-gray-700">Pulse Rate</label>
                         <div class="mt-1 relative rounded-md shadow-sm">
                             <input type="number" name="pulse" id="pulse" required
-                                   class="focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-4 pr-12 py-3 sm:text-sm border-gray-300 rounded-md border"
-                                   placeholder="60-100">
+                            value="{{ old('pulse', $lastVitals->pulse ?? '') }}"
+                            class="focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-4 pr-12 py-3 sm:text-sm border-gray-300 rounded-md border"
+                            placeholder="60-100">
                             <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
                                 <span class="text-gray-500 sm:text-sm">bpm</span>
                             </div>
@@ -99,8 +159,9 @@
                         <label for="weight" class="block text-sm font-medium text-gray-700">Weight</label>
                         <div class="mt-1 relative rounded-md shadow-sm">
                             <input type="number" name="weight" id="weight" step="0.1" required
-                                   class="focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-4 pr-12 py-3 sm:text-sm border-gray-300 rounded-md border"
-                                   placeholder="Weight in kg">
+                            value="{{ old('weight', $lastVitals->weight ?? '') }}"
+                            class="focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-4 pr-12 py-3 sm:text-sm border-gray-300 rounded-md border"
+                            placeholder="Weight in kg">
                             <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
                                 <span class="text-gray-500 sm:text-sm">kg</span>
                             </div>
@@ -110,8 +171,11 @@
                     <!-- Additional Fields -->
                     <div class="md:col-span-2">
                         <label for="notes" class="block text-sm font-medium text-gray-700">Notes</label>
-                        <div class="mt-1">
-                            <textarea id="notes" name="notes" rows="3" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md border p-2" placeholder="Any additional observations"></textarea>
+                        <div class="mt-1">       
+                            <textarea id="notes" name="notes" rows="3"
+                                class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md border p-2"
+                                placeholder="Any additional observations">{{ old('notes', $lastVitals->notes ?? '') }}
+                            </textarea>
                         </div>
                     </div>
                 </div>

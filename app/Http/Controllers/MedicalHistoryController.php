@@ -97,4 +97,40 @@ class MedicalHistoryController extends Controller
             'dispensations'
         ));
     }
+
+    public function partialView($patientId)
+    {
+        $patientRecord = Patient::where('patient_id', $patientId)->firstOrFail();
+        $patient = $patientRecord->user;
+
+        $appointments = Appointment::with('doctor')
+            ->where('patient_id', $patient->id)
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        $vitals = Vitals::with('nurse')
+            ->where('patient_id', $patient->id)
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        $prescriptions = Prescription::with(['doctor', 'medications'])
+            ->where('patient_id', $patient->id)
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        $dispensations = Dispensation::with(['pharmacist', 'prescription'])
+            ->whereHas('prescription', function ($q) use ($patient) {
+                $q->where('patient_id', $patient->id);
+            })
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return view('medical-history.partial', compact(
+            'patient',
+            'appointments',
+            'vitals',
+            'prescriptions',
+            'dispensations'
+        ));
+    }
 }
