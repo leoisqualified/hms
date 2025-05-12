@@ -21,6 +21,24 @@
                     <p class="text-sm text-gray-500">Total Medications</p>
                     <p class="text-lg font-semibold text-gray-900">{{ $medications->count() }}</p>
                 </div>
+
+                <div class="mt-4 sm:mt-0">
+                    <div class="bg-white px-5 py-4 rounded-xl shadow-sm border border-gray-200 hover:shadow-md transition-shadow duration-200">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-xs font-medium uppercase tracking-wider text-gray-400">Total Price</p>
+                                <p class="text-2xl font-bold text-gray-900 mt-1">
+                                    ${{ number_format($totalPrice, 2) }}
+                                </p>
+                            </div>
+                            <div class="bg-blue-50 p-3 rounded-lg">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -58,10 +76,10 @@
                                         </div>
                                         <div class="ml-4">
                                             <div class="text-sm font-medium text-gray-900">{{ $med->medication_name }}</div>
-                                            <div class="text-sm text-gray-700 mt-1">
+                                            {{-- <div class="text-sm text-gray-700 mt-1">
                                                 <strong>Price:</strong> 
                                                 {{ $med->price ? '$' . number_format($med->price, 2) : 'Price not set yet' }}
-                                            </div>
+                                            </div> --}}
                                         </div>                                        
                                     </div>
                                 </td>
@@ -106,6 +124,18 @@
                             @endforeach
                         </tbody>
                     </table>
+
+                    @if ($medications->where('is_paid', false)->count() > 0)
+                        <form action="{{ route('payment.checkout.bulk') }}" method="POST" class="mt-6 text-right">
+                            @csrf
+                            <input type="hidden" name="total_amount" value="{{ $totalPrice }}">
+                            <input type="hidden" name="med_ids" value="{{ $medications->pluck('id')->join(',') }}">
+                            <button type="submit" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded shadow-sm text-white bg-indigo-600 hover:bg-indigo-700">
+                                Pay All (${{ number_format($totalPrice, 2) }})
+                            </button>
+                        </form>
+                    @endif
+
                 </div>
                 <!-- Pagination would go here -->
             </div>

@@ -92,6 +92,7 @@ Route::middleware(['auth', 'role:patient'])->group(function () {
     Route::get('/patient/appointments', [PatientController::class, 'appointments'])->name('patient.appointments');
     Route::delete('/patient/appointments/{appointment}/cancel', [PatientController::class, 'cancelAppointment'])->name('patient.cancel-appointment');
     Route::get('/my-medical-history', [MedicalHistoryController::class, 'myHistory'])->name('patient.medical_history');
+    Route::post('/payment/checkout/bulk', [PaymentController::class, 'checkoutBulk'])->name('payment.checkout.bulk');
 });
 
 Route::post('/payment/checkout', [PaymentController::class, 'checkout'])->name('payment.checkout');

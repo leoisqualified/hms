@@ -91,6 +91,8 @@ class PatientController extends Controller
             $query->where('patient_id', $user->id);
         })->with('prescription')->get();
 
-        return view('patient.medications', compact('medications'));
+        $totalPrice = $medications->sum('price');
+
+        return view('patient.medications', compact('medications', 'totalPrice'));
     }
 }
