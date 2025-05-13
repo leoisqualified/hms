@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Collection;
 use App\Models\Patient;
 use App\Models\Appointment;
 use App\Models\Vitals;
@@ -46,14 +47,47 @@ class MedicalHistoryController extends Controller
             ->orderBy('created_at', 'desc')
             ->get();
 
-        return view('medical-history.show', compact(
-            'patient',
-            'patientRecord',
-            'appointments',
-            'vitals',
-            'prescriptions',
-            'dispensations'
-        ));
+            $merged = collect();
+            
+            foreach ($appointments as $appt) {
+                $merged->push([
+                    'type' => 'appointment',
+                    'date' => $appt->created_at->toDateString(),
+                    'data' => $appt,
+                ]);
+            }
+            
+            foreach ($vitals as $vital) {
+                $merged->push([
+                    'type' => 'vital',
+                    'date' => $vital->created_at->toDateString(),
+                    'data' => $vital,
+                ]);
+            }
+            
+            foreach ($prescriptions as $prescription) {
+                $merged->push([
+                    'type' => 'prescription',
+                    'date' => $prescription->created_at->toDateString(),
+                    'data' => $prescription,
+                ]);
+            }
+            
+            foreach ($dispensations as $disp) {
+                $merged->push([
+                    'type' => 'dispensation',
+                    'date' => $disp->created_at->toDateString(),
+                    'data' => $disp,
+                ]);
+            }
+            
+            $groupedByDate = $merged->groupBy('date')->sortKeysDesc();
+            
+            return view('medical-history.show', compact(
+                'patient',
+                'patientRecord',
+                'groupedByDate'
+            ));
     }
 
     public function myHistory()
@@ -90,15 +124,47 @@ class MedicalHistoryController extends Controller
             ->orderBy('created_at', 'desc')
             ->get();
 
-        return view('medical-history.show', compact(
-            'patient',
-            'user',
-            'patientRecord',
-            'appointments',
-            'vitals',
-            'prescriptions',
-            'dispensations'
-        ));
+            $merged = collect();
+            
+            foreach ($appointments as $appt) {
+                $merged->push([
+                    'type' => 'appointment',
+                    'date' => $appt->created_at->toDateString(),
+                    'data' => $appt,
+                ]);
+            }
+            
+            foreach ($vitals as $vital) {
+                $merged->push([
+                    'type' => 'vital',
+                    'date' => $vital->created_at->toDateString(),
+                    'data' => $vital,
+                ]);
+            }
+            
+            foreach ($prescriptions as $prescription) {
+                $merged->push([
+                    'type' => 'prescription',
+                    'date' => $prescription->created_at->toDateString(),
+                    'data' => $prescription,
+                ]);
+            }
+            
+            foreach ($dispensations as $disp) {
+                $merged->push([
+                    'type' => 'dispensation',
+                    'date' => $disp->created_at->toDateString(),
+                    'data' => $disp,
+                ]);
+            }
+            
+            $groupedByDate = $merged->groupBy('date')->sortKeysDesc();
+            
+            return view('medical-history.show', compact(
+                'patient',
+                'patientRecord',
+                'groupedByDate'
+            ));            
     }
 
     public function partialView($patientId)
@@ -128,12 +194,49 @@ class MedicalHistoryController extends Controller
             ->orderBy('created_at', 'desc')
             ->get();
 
-        return view('medical-history.partial', compact(
-            'patient',
-            'appointments',
-            'vitals',
-            'prescriptions',
-            'dispensations'
-        ));
+
+            // Merge and group all records by date
+            $merged = collect();
+            
+            foreach ($appointments as $appt) {
+                $merged->push([
+                    'type' => 'appointment',
+                    'date' => $appt->created_at->toDateString(),
+                    'data' => $appt,
+                ]);
+            }
+            
+            foreach ($vitals as $vital) {
+                $merged->push([
+                    'type' => 'vital',
+                    'date' => $vital->created_at->toDateString(),
+                    'data' => $vital,
+                ]);
+            }
+            
+            foreach ($prescriptions as $prescription) {
+                $merged->push([
+                    'type' => 'prescription',
+                    'date' => $prescription->created_at->toDateString(),
+                    'data' => $prescription,
+                ]);
+            }
+            
+            foreach ($dispensations as $disp) {
+                $merged->push([
+                    'type' => 'dispensation',
+                    'date' => $disp->created_at->toDateString(),
+                    'data' => $disp,
+                ]);
+            }
+            
+            $groupedByDate = $merged->groupBy('date')->sortKeysDesc();
+            
+            return view('medical-history.show', compact(
+                'patient',
+                'patientRecord',
+                'groupedByDate'
+            ));
+            
     }
 }
