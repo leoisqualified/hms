@@ -71,6 +71,7 @@ Route::middleware(['auth', 'role:doctor'])->group(function () {
     Route::get('/doctor/patient/{patientId}', [DoctorController::class, 'viewPatient'])->name('doctor.view-patient');
     Route::post('/doctor/prescribe/{patientId}', [DoctorController::class, 'prescribe'])->name('doctor.prescribe');
     Route::get('/doctor/schedules', [DoctorController::class, 'mySchedules'])->name('doctor.schedules');
+    Route::get('/medical-history/{patientId}', [MedicalHistoryController::class, 'show'])->name('medical-history.show');
 });
 
 // Pharmacist Routes

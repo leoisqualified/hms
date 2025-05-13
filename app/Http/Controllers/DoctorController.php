@@ -89,5 +89,18 @@ class DoctorController extends Controller
         $schedules = DoctorSchedule::where('doctor_id', Auth::id())->get();
         return view('doctor.schedules', compact('schedules'));
     }
+    
+    public function showMedicalHistory($patientId)
+    {
+        $patientRecord = Patient::where('patient_id', $patientId)->firstOrFail();
+        $patient = $patientRecord->user;
 
+        // This assumes a `medicalHistories()` relationship exists on the User or Patient model.
+        $medicalHistories = $patient->medicalHistories()->latest()->get();
+
+        return view('doctor.medical-history', [
+            'patient' => $patient,
+            'medicalHistories' => $medicalHistories,
+        ]);
+    }
 }
