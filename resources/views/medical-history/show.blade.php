@@ -3,86 +3,212 @@
 @section('title', 'Medical History')
 
 @section('content')
-<div class="max-w-6xl mx-auto py-10 px-6">
+<div class="max-w-6xl mx-auto py-10 px-4 sm:px-6 lg:px-8">
 
-    <h1 class="text-3xl font-bold text-gray-800 mb-6">
-        Medical History for {{ $patient->name }}
-    </h1>
-
-    <!-- Appointments -->
-    <div class="mb-8">
-        <h2 class="text-2xl font-semibold text-gray-700 mb-4">Appointments</h2>
-        @forelse($appointments as $appt)
-            <div class="bg-white shadow rounded-lg p-4 mb-3 border">
-                <div class="flex justify-between">
-                    <span><strong>Doctor:</strong> {{ $appt->doctor->name }}</span>
-                    <span class="text-sm text-gray-500">{{ $appt->created_at->format('M d, Y H:i') }}</span>
-                </div>
-                <p class="text-gray-600 mt-2">{{ $appt->notes ?? 'No notes provided.' }}</p>
-            </div>
-        @empty
-            <p class="text-gray-500">No appointments found.</p>
-        @endforelse
+    <!-- Patient Header -->
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
+        <div>
+            <h1 class="text-3xl font-bold text-gray-900 mb-2">
+                Medical History for {{ $patient->name }}
+            </h1>
+            <p class="text-gray-600">Comprehensive health records overview</p>
+        </div>
+        <a href="{{ url()->previous() }}" class="mt-4 md:mt-0 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+            ← Back to previous page
+        </a>
     </div>
 
-    <!-- Vitals -->
-    <div class="mb-8">
-        <h2 class="text-2xl font-semibold text-gray-700 mb-4">Vitals</h2>
-        @forelse($vitals as $vital)
-            <div class="bg-white shadow rounded-lg p-4 mb-3 border">
-                <div class="flex justify-between">
-                    <span><strong>Recorded by Nurse:</strong> {{ $vital->nurse->name ?? 'N/A' }}</span>
-                    <span class="text-sm text-gray-500">{{ $vital->created_at->format('M d, Y H:i') }}</span>
-                </div>
-                <ul class="mt-2 text-gray-600 space-y-1">
-                    <li>Blood Pressure: {{ $vital->blood_pressure }}</li>
-                    <li>Temperature: {{ $vital->temperature }}</li>
-                    <li>Pulse: {{ $vital->pulse }}</li>
-                    <li>Respiration: {{ $vital->respiration }}</li>
-                </ul>
-            </div>
-        @empty
-            <p class="text-gray-500">No vitals recorded.</p>
-        @endforelse
+    <!-- Summary Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+        <div class="bg-white p-4 rounded-lg shadow border-l-4 border-blue-500">
+            <h3 class="text-sm font-medium text-gray-500">Total Appointments</h3>
+            <p class="text-2xl font-semibold text-gray-900">{{ count($appointments) }}</p>
+        </div>
+        <div class="bg-white p-4 rounded-lg shadow border-l-4 border-green-500">
+            <h3 class="text-sm font-medium text-gray-500">Vitals Recorded</h3>
+            <p class="text-2xl font-semibold text-gray-900">{{ count($vitals) }}</p>
+        </div>
+        <div class="bg-white p-4 rounded-lg shadow border-l-4 border-purple-500">
+            <h3 class="text-sm font-medium text-gray-500">Prescriptions</h3>
+            <p class="text-2xl font-semibold text-gray-900">{{ count($prescriptions) }}</p>
+        </div>
+        <div class="bg-white p-4 rounded-lg shadow border-l-4 border-yellow-500">
+            <h3 class="text-sm font-medium text-gray-500">Dispensations</h3>
+            <p class="text-2xl font-semibold text-gray-900">{{ count($dispensations) }}</p>
+        </div>
     </div>
 
-    <!-- Prescriptions -->
-    <div class="mb-8">
-        <h2 class="text-2xl font-semibold text-gray-700 mb-4">Prescriptions</h2>
-        @forelse($prescriptions as $prescription)
-            <div class="bg-white shadow rounded-lg p-4 mb-3 border">
-                <div class="flex justify-between">
-                    <span><strong>Prescribed by:</strong> {{ $prescription->doctor->name }}</span>
-                    <span class="text-sm text-gray-500">{{ $prescription->created_at->format('M d, Y H:i') }}</span>
+    <!-- Appointments Section -->
+    <div class="mb-10 bg-white rounded-xl shadow-md overflow-hidden">
+        <div class="px-6 py-4 bg-gray-50 border-b">
+            <h2 class="text-xl font-semibold text-gray-800 flex items-center">
+                <svg class="w-5 h-5 mr-2 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                </svg>
+                Appointments
+            </h2>
+        </div>
+        <div class="divide-y divide-gray-200">
+            @forelse($appointments as $appt)
+                <div class="p-6 hover:bg-gray-50 transition duration-150 ease-in-out">
+                    <div class="flex flex-col sm:flex-row justify-between">
+                        <div class="mb-2 sm:mb-0">
+                            <h3 class="text-lg font-medium text-gray-900">{{ $appt->doctor->name }}</h3>
+                            <p class="text-sm text-gray-500">{{ $appt->created_at->format('l, F j, Y \a\t g:i A') }}</p>
+                        </div>
+                        <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
+                            Completed
+                        </span>
+                    </div>
+                    <div class="mt-4">
+                        <h4 class="text-sm font-medium text-gray-700 mb-1">Notes:</h4>
+                        <p class="text-gray-600">{{ $appt->notes ?? 'No notes provided.' }}</p>
+                    </div>
                 </div>
-                <ul class="mt-2 text-gray-600 space-y-1">
-                    @foreach($prescription->medications as $med)
-                        <li>{{ $med->name }} - {{ $med->dosage }} ({{ $med->frequency }})</li>
-                    @endforeach
-                </ul>
-            </div>
-        @empty
-            <p class="text-gray-500">No prescriptions found.</p>
-        @endforelse
+            @empty
+                <div class="p-6 text-center text-gray-500">
+                    No appointments found for this patient.
+                </div>
+            @endforelse
+        </div>
     </div>
 
-    <!-- Dispensations -->
-    <div class="mb-8">
-        <h2 class="text-2xl font-semibold text-gray-700 mb-4">Dispensations</h2>
-        @forelse($dispensations as $disp)
-            <div class="bg-white shadow rounded-lg p-4 mb-3 border">
-                <div class="flex justify-between">
-                    <span><strong>Pharmacist:</strong> {{ $disp->pharmacist->name ?? 'N/A' }}</span>
-                    <span class="text-sm text-gray-500">{{ $disp->created_at->format('M d, Y H:i') }}</span>
+    <!-- Vitals Section -->
+    <div class="mb-10 bg-white rounded-xl shadow-md overflow-hidden">
+        <div class="px-6 py-4 bg-gray-50 border-b">
+            <h2 class="text-xl font-semibold text-gray-800 flex items-center">
+                <svg class="w-5 h-5 mr-2 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                </svg>
+                Vitals
+            </h2>
+        </div>
+        <div class="divide-y divide-gray-200">
+            @forelse($vitals as $vital)
+                <div class="p-6 hover:bg-gray-50 transition duration-150 ease-in-out">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h3 class="text-lg font-medium text-gray-900">Recorded by {{ $vital->nurse->name ?? 'Nurse' }}</h3>
+                            <p class="text-sm text-gray-500">{{ $vital->created_at->format('l, F j, Y \a\t g:i A') }}</p>
+                        </div>
+                    </div>
+                    <div class="mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                        <div class="bg-blue-50 p-3 rounded-lg">
+                            <p class="text-xs font-medium text-blue-800">BLOOD PRESSURE</p>
+                            <p class="text-xl font-semibold text-gray-900">{{ $vital->blood_pressure }}</p>
+                        </div>
+                        <div class="bg-green-50 p-3 rounded-lg">
+                            <p class="text-xs font-medium text-green-800">TEMPERATURE</p>
+                            <p class="text-xl font-semibold text-gray-900">{{ $vital->temperature }}°F</p>
+                        </div>
+                        <div class="bg-purple-50 p-3 rounded-lg">
+                            <p class="text-xs font-medium text-purple-800">PULSE</p>
+                            <p class="text-xl font-semibold text-gray-900">{{ $vital->pulse }} bpm</p>
+                        </div>
+                        <div class="bg-yellow-50 p-3 rounded-lg">
+                            <p class="text-xs font-medium text-yellow-800">RESPIRATION</p>
+                            <p class="text-xl font-semibold text-gray-900">{{ $vital->respiration }}</p>
+                        </div>
+                    </div>
                 </div>
-                <p class="text-gray-600 mt-2">Prescription ID: {{ $disp->prescription_id }}</p>
-            </div>
-        @empty
-            <p class="text-gray-500">No dispensations found.</p>
-        @endforelse
+            @empty
+                <div class="p-6 text-center text-gray-500">
+                    No vitals recorded for this patient.
+                </div>
+            @endforelse
+        </div>
     </div>
 
-    <a href="{{ url()->previous() }}" class="inline-block mt-6 text-blue-600 hover:underline">← Back</a>
+    <!-- Prescriptions Section -->
+    <div class="mb-10 bg-white rounded-xl shadow-md overflow-hidden">
+        <div class="px-6 py-4 bg-gray-50 border-b">
+            <h2 class="text-xl font-semibold text-gray-800 flex items-center">
+                <svg class="w-5 h-5 mr-2 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+                </svg>
+                Prescriptions
+            </h2>
+        </div>
+        <div class="divide-y divide-gray-200">
+            @forelse($prescriptions as $prescription)
+                <div class="p-6 hover:bg-gray-50 transition duration-150 ease-in-out">
+                    <div class="flex flex-col sm:flex-row justify-between">
+                        <div class="mb-2 sm:mb-0">
+                            <h3 class="text-lg font-medium text-gray-900">Prescribed by Dr. {{ $prescription->doctor->name }}</h3>
+                            <p class="text-sm text-gray-500">{{ $prescription->created_at->format('l, F j, Y') }}</p>
+                        </div>
+                        <div class="text-sm text-gray-500">
+                            Prescription #{{ $prescription->id }}
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <h4 class="text-sm font-medium text-gray-700 mb-2">Medications:</h4>
+                        <ul class="space-y-2">
+                            @foreach($prescription->medications as $med)
+                                <li class="flex items-start">
+                                    <svg class="flex-shrink-0 h-5 w-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                    <span class="ml-2 text-gray-600">
+                                        <span class="font-medium">{{ $med->name }}</span> - {{ $med->dosage }} ({{ $med->frequency }})
+                                    </span>
+                                </li>
+                            @endforeach
+                        </ul>
+                    </div>
+                </div>
+            @empty
+                <div class="p-6 text-center text-gray-500">
+                    No prescriptions found for this patient.
+                </div>
+            @endforelse
+        </div>
+    </div>
+
+    <!-- Dispensations Section -->
+    <div class="mb-10 bg-white rounded-xl shadow-md overflow-hidden">
+        <div class="px-6 py-4 bg-gray-50 border-b">
+            <h2 class="text-xl font-semibold text-gray-800 flex items-center">
+                <svg class="w-5 h-5 mr-2 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
+                </svg>
+                Dispensations
+            </h2>
+        </div>
+        <div class="divide-y divide-gray-200">
+            @forelse($dispensations as $disp)
+                <div class="p-6 hover:bg-gray-50 transition duration-150 ease-in-out">
+                    <div class="flex flex-col sm:flex-row justify-between">
+                        <div class="mb-2 sm:mb-0">
+                            <h3 class="text-lg font-medium text-gray-900">Dispensed by {{ $disp->pharmacist->name ?? 'Pharmacist' }}</h3>
+                            <p class="text-sm text-gray-500">{{ $disp->created_at->format('l, F j, Y \a\t g:i A') }}</p>
+                        </div>
+                        <div class="text-sm">
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                Fulfilled
+                            </span>
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <h4 class="text-sm font-medium text-gray-700">Prescription ID</h4>
+                                <p class="text-gray-600">{{ $disp->prescription_id }}</p>
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-medium text-gray-700">Dispensation Date</h4>
+                                <p class="text-gray-600">{{ $disp->created_at->format('M j, Y') }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @empty
+                <div class="p-6 text-center text-gray-500">
+                    No dispensations found for this patient.
+                </div>
+            @endforelse
+        </div>
+    </div>
 
 </div>
 @endsection
