@@ -62,98 +62,145 @@
 
         <!-- Quick Stats -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-            <!-- Appointments Card -->
-            <div class="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100 hover:shadow-xl transition-shadow duration-300">
+            <!-- Enhanced Appointments Card -->
+            <div class="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
                 <div class="px-6 py-5">
-                    <div class="flex items-center">
-                        <div class="flex-shrink-0 bg-blue-100 rounded-xl p-4">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <div class="flex items-start">
+                        <div class="flex-shrink-0 bg-gradient-to-br from-blue-100 to-blue-50 rounded-xl p-4 shadow-inner">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                             </svg>
                         </div>
-                        <div class="ml-5">
-                            <h3 class="text-lg font-medium text-gray-900">Appointments</h3>
-                            <p class="mt-1 text-3xl font-semibold text-gray-900">{{ $appointmentsCount ?? 0 }}</p>
-                            <a href="{{ route('patient.appointments') }}" class="mt-2 inline-flex items-center text-sm font-medium text-blue-600 hover:text-blue-500">
-                                View all appointments
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                                </svg>
-                            </a>
+                        <div class="ml-5 flex-1">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <h3 class="text-lg font-semibold text-gray-900">Appointments</h3>
+                                    <p class="text-sm text-gray-500">Upcoming consultations</p>
+                                </div>
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                                    {{ $appointmentsCount ?? 0 }} scheduled
+                                </span>
+                            </div>
+                            
+                            <div class="mt-4 flex items-center justify-between">
+                                <div class="flex space-x-3 text-sm">
+                                    <div class="flex items-center text-blue-600">
+                                        <svg class="flex-shrink-0 mr-1.5 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                        </svg>
+                                        <span>Active</span>
+                                    </div>
+                                </div>
+                                <a href="{{ route('patient.appointments') }}" class="inline-flex items-center px-3 py-1.5 border border-transparent text-sm font-medium rounded-full shadow-sm text-white bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-150">
+                                    View Schedule
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1 -mr-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                                    </svg>
+                                </a>
+                            </div>
                         </div>
+                    </div>
+                </div>
+                <div class="bg-gray-50 px-6 py-3 border-t border-gray-100">
+                    <div class="text-xs text-gray-500">
+                        Next appointment: {{ $nextAppointmentDate ?? 'Not scheduled' }}
                     </div>
                 </div>
             </div>
 
-            <!-- Medications Card -->
-            <div class="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100 hover:shadow-xl transition-shadow duration-300">
+            <!-- Enhanced Medications Card -->
+            <div class="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
                 <div class="px-6 py-5">
-                    <div class="flex items-center">
-                        <div class="flex-shrink-0 bg-green-100 rounded-xl p-4">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+                    <div class="flex items-start">
+                        <div class="flex-shrink-0 bg-gradient-to-br from-green-100 to-green-50 rounded-xl p-4 shadow-inner">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
                             </svg>
                         </div>
-                        <div class="ml-5">
-                            <h3 class="text-lg font-medium text-gray-900">Medications</h3>
-                            <p class="mt-1 text-3xl font-semibold text-gray-900">{{ $medicationsCount ?? 0 }}</p>
-                            <a href="{{ route('patient.medications') }}" class="mt-2 inline-flex items-center text-sm font-medium text-green-600 hover:text-green-500">
-                                View all medications
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                                </svg>
-                            </a>
+                        <div class="ml-5 flex-1">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <h3 class="text-lg font-semibold text-gray-900">Medications</h3>
+                                    <p class="text-sm text-gray-500">Current prescriptions</p>
+                                </div>
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                    {{ $medicationsCount ?? 0 }} active
+                                </span>
+                            </div>
+                            
+                            <div class="mt-4 flex items-center justify-between">
+                                <div class="flex space-x-3 text-sm">
+                                    <div class="flex items-center text-green-600">
+                                        <svg class="flex-shrink-0 mr-1.5 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                        </svg>
+                                        <span>Prescribed</span>
+                                    </div>
+                                </div>
+                                <a href="{{ route('patient.medications') }}" class="inline-flex items-center px-3 py-1.5 border border-transparent text-sm font-medium rounded-full shadow-sm text-white bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-all duration-150">
+                                    View Medications
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1 -mr-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                                    </svg>
+                                </a>
+                            </div>
                         </div>
+                    </div>
+                </div>
+                <div class="bg-gray-50 px-6 py-3 border-t border-gray-100">
+                    <div class="text-xs text-gray-500">
+                        Last prescribed: {{ $lastPrescriptionDate ?? 'No records' }}
                     </div>
                 </div>
             </div>
 
-            <!-- Reports Card -->
-            <div class="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100 hover:shadow-xl transition-shadow duration-300">
+            <!-- Enhanced Medical History Card -->
+            <div class="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
                 <div class="px-6 py-5">
-                    <div class="flex items-center">
-                        <div class="flex-shrink-0 bg-purple-100 rounded-xl p-4">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    <div class="flex items-start">
+                        <div class="flex-shrink-0 bg-gradient-to-br from-red-100 to-red-50 rounded-xl p-4 shadow-inner">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
                             </svg>
                         </div>
-                        <div class="ml-5">
-                            <h3 class="text-lg font-medium text-gray-900">Medical Reports</h3>
-                            <p class="mt-1 text-3xl font-semibold text-gray-900">{{ $reportsCount ?? 0 }}</p>
-                            <a href="#" class="mt-2 inline-flex items-center text-sm font-medium text-purple-600 hover:text-purple-500">
-                                View all reports
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                                </svg>
-                            </a>
+                        <div class="ml-5 flex-1">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <h3 class="text-lg font-semibold text-gray-900">Medical History</h3>
+                                    <p class="text-sm text-gray-500">Comprehensive health records</p>
+                                </div>
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                                    {{ $medicalHistoryCount ?? 0 }} records
+                                </span>
+                            </div>
+                            
+                            <div class="mt-4 flex items-center justify-between">
+                                <div class="flex space-x-3 text-sm">
+                                    <div class="flex items-center text-green-600">
+                                        <svg class="flex-shrink-0 mr-1.5 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+                                        </svg>
+                                        <span>Complete</span>
+                                    </div>
+                                </div>
+                                <a href="{{ route('patient.medical_history') }}" class="inline-flex items-center px-3 py-1.5 border border-transparent text-sm font-medium rounded-full shadow-sm text-white bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-all duration-150">
+                                    View Details
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1 -mr-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                                    </svg>
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
+                <div class="bg-gray-50 px-6 py-3 border-t border-gray-100">
+                    <div class="text-xs text-gray-500">
+                        Last updated: {{ now()->format('M j, Y') }}
+                    </div>
+                </div>
             </div>
-        </div>
 
-        <!-- Medical History Card -->
-        <div class="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100 hover:shadow-xl transition-shadow duration-300">
-            <div class="px-6 py-5">
-                <div class="flex items-center">
-                    <div class="flex-shrink-0 bg-red-100 rounded-xl p-4">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-3-3v6m6 4a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                    </div>
-                    <div class="ml-5">
-                        <h3 class="text-lg font-medium text-gray-900">Medical History</h3>
-                        <p class="mt-1 text-3xl font-semibold text-gray-900">{{ $medicalHistoryCount ?? 0 }}</p>
-                        <a href="{{ route('patient.medical_history') }}" class="mt-2 inline-flex items-center text-sm font-medium text-red-600 hover:text-red-500">
-                            View medical history
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                            </svg>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
+       
 
         <!-- Recent Activity -->
         <div class="divide-y divide-gray-200">

@@ -66,6 +66,8 @@ class MedicalHistoryController extends Controller
             abort(404, 'Patient record not found.');
         }
 
+        $patient = $user;
+
         $appointments = Appointment::with('doctor')
             ->where('patient_id', $user->id)
             ->orderBy('created_at', 'desc')
@@ -89,6 +91,7 @@ class MedicalHistoryController extends Controller
             ->get();
 
         return view('medical-history.show', compact(
+            'patient',
             'user',
             'patientRecord',
             'appointments',

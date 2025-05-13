@@ -58,7 +58,7 @@ class PatientController extends Controller
 
         // Fetch only scheduled appointments
         $appointments = $user->appointments()
-                            ->where('status', 'scheduled')
+                            ->where('status', 'checked_in')
                             ->with('doctor')
                             ->latest()
                             ->get();

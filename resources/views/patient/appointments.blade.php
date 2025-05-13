@@ -16,14 +16,6 @@
                 </h2>
                 <p class="mt-1 text-sm text-gray-600">View and manage your upcoming medical appointments</p>
             </div>
-            {{-- <div class="mt-4 sm:mt-0">
-                <a href="{{ route('patient.book-appointment') }}" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                    </svg>
-                    Book New Appointment
-                </a>
-            </div> --}}
         </div>
 
         <!-- Appointments Table -->
@@ -34,11 +26,6 @@
                 </svg>
                 <h3 class="mt-2 text-sm font-medium text-gray-900">No appointments scheduled</h3>
                 <p class="mt-1 text-sm text-gray-500">You currently have no upcoming appointments.</p>
-                {{-- <div class="mt-6">
-                    <a href="{{ route('patient.book-appointment') }}" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                        Book Your First Appointment
-                    </a>
-                </div> --}}
             </div>
         @else
             <div class="bg-white shadow rounded-lg overflow-hidden">
@@ -46,7 +33,7 @@
                     <table class="min-w-full divide-y divide-gray-200">
                         <thead class="bg-gray-50">
                             <tr>
-                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date & Time</th>
+                                {{-- <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date & Time</th> --}}
                                 <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Doctor</th>
                                 <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Department</th>
                                 <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
@@ -56,14 +43,14 @@
                         <tbody class="bg-white divide-y divide-gray-200">
                             @foreach ($appointments as $appointment)
                             <tr class="hover:bg-gray-50 transition-colors duration-150">
-                                <td class="px-6 py-4 whitespace-nowrap">
+                                {{-- <td class="px-6 py-4 whitespace-nowrap">
                                     @if ($appointment->date)
                                         <div class="text-sm font-medium text-gray-900">{{ $appointment->date->format('M d, Y') }}</div>
                                         <div class="text-sm text-gray-500">{{ $appointment->date->format('h:i A') }}</div>
                                     @else
                                         <div class="text-sm text-gray-500 italic">Not set</div>
                                     @endif
-                                </td>                                
+                                </td>                                 --}}
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="flex items-center">
                                         <div class="flex-shrink-0 h-10 w-10 rounded-full bg-indigo-100 flex items-center justify-center">
