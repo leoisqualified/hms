@@ -85,6 +85,16 @@
             </div>
         </div>
 
+        <!-- Request Lab Test Button -->
+        <div class="mt-6">
+            <form action="{{ route('labtests.create', $patient->id) }}" method="GET">
+                <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
+                    Request Lab Test
+                </button>
+            </form>
+        </div>
+
+
         <!-- Prescription Form -->
         <div class="bg-white shadow rounded-lg overflow-hidden">
             <div class="px-6 py-4 border-b border-gray-200 bg-gray-50">

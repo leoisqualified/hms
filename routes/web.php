@@ -9,6 +9,7 @@ use App\Http\Controllers\PharmacistController;
 use App\Http\Controllers\PatientController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\MedicalHistoryController;
+use App\Http\Controllers\LabTestController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -98,5 +99,17 @@ Route::middleware(['auth', 'role:patient'])->group(function () {
 Route::post('/payment/checkout', [PaymentController::class, 'checkout'])->name('payment.checkout');
 Route::get('/payment/success', [PaymentController::class, 'success'])->name('payment.success');
 Route::get('/payment/cancel', [PaymentController::class, 'cancel'])->name('payment.cancel');
+
+
+// LabTest Routes
+Route::prefix('labtests')->middleware('auth')->group(function () {
+    Route::get('/', [LabTestController::class, 'index'])->name('labtests.index');
+    Route::get('/{id}', [LabTestController::class, 'show'])->name('labtests.show');
+    Route::put('/{id}', [LabTestController::class, 'update'])->name('labtests.update');
+
+    Route::get('/request/{patient}', [LabTestController::class, 'create'])->name('labtests.create');
+    Route::post('/request/{patient}', [LabTestController::class, 'store'])->name('labtests.store');
+});
+
 
 require __DIR__.'/auth.php';
