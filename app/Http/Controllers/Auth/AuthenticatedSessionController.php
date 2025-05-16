@@ -37,7 +37,7 @@ class AuthenticatedSessionController extends Controller
         'doctor' => route('doctor.dashboard'),
         'pharmacist' => route('pharmacist.dashboard'),
         'patient' => route('patient.dashboard'),
-        // 'lab_technician' => route('labtechnician.dashboard'),
+        'labtechnician' => route('labtests.index'),
         default => '/login',
     });
 }

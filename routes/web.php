@@ -72,6 +72,8 @@ Route::middleware(['auth', 'role:doctor'])->group(function () {
     Route::post('/doctor/prescribe/{patientId}', [DoctorController::class, 'prescribe'])->name('doctor.prescribe');
     Route::get('/doctor/schedules', [DoctorController::class, 'mySchedules'])->name('doctor.schedules');
     Route::get('/medical-history/{patientId}', [MedicalHistoryController::class, 'show'])->name('medical-history.show');
+    Route::get('/labtests/request/{patient}', [LabTestController::class, 'create'])->name('labtests.create');
+    Route::post('/labtests/request/{patient}', [LabTestController::class, 'store'])->name('labtests.store');
 });
 
 // Pharmacist Routes
@@ -96,20 +98,17 @@ Route::middleware(['auth', 'role:patient'])->group(function () {
     Route::post('/payment/checkout/bulk', [PaymentController::class, 'checkoutBulk'])->name('payment.checkout.bulk');
 });
 
+
+// Lab Technician Routes
+Route::middleware(['auth', 'role:labtechnician'])->group(function () {
+    Route::get('/labtests', [LabTestController::class, 'index'])->name('labtests.index');
+    Route::get('/labtests/{id}', [LabTestController::class, 'show'])->name('labtests.show');
+    Route::put('/labtests/{id}', [LabTestController::class, 'update'])->name('labtests.update');
+});
+
+
 Route::post('/payment/checkout', [PaymentController::class, 'checkout'])->name('payment.checkout');
 Route::get('/payment/success', [PaymentController::class, 'success'])->name('payment.success');
 Route::get('/payment/cancel', [PaymentController::class, 'cancel'])->name('payment.cancel');
-
-
-// LabTest Routes
-Route::prefix('labtests')->middleware('auth')->group(function () {
-    Route::get('/', [LabTestController::class, 'index'])->name('labtests.index');
-    Route::get('/{id}', [LabTestController::class, 'show'])->name('labtests.show');
-    Route::put('/{id}', [LabTestController::class, 'update'])->name('labtests.update');
-
-    Route::get('/request/{patient}', [LabTestController::class, 'create'])->name('labtests.create');
-    Route::post('/request/{patient}', [LabTestController::class, 'store'])->name('labtests.store');
-});
-
 
 require __DIR__.'/auth.php';

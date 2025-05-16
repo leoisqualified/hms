@@ -46,6 +46,12 @@ class StaffSeeder extends Seeder
                 'role' => 'pharmacist',
                 'password' => Hash::make('password'),
             ],
+            [
+                'name' => 'Labtechnician Gary',
+                'email' => 'labtechnician@example.com',
+                'role' => 'labtechnician',
+                'password' => Hash::make('password'),
+            ]
         ];
 
         foreach ($staff as $person) {
