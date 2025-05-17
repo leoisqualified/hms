@@ -30,7 +30,7 @@ class MedicalHistoryController extends Controller
         // Step 3: Get vitals with nurse details
         $vitals = Vitals::with('nurse')
             ->where('patient_id', $patient->id)
-            ->orderBy('created_at', 'desc')
+            ->orderBy('updated_at', 'desc')
             ->get();
 
         // Step 4: Get prescriptions with medications and doctor
@@ -60,7 +60,7 @@ class MedicalHistoryController extends Controller
             foreach ($vitals as $vital) {
                 $merged->push([
                     'type' => 'vital',
-                    'date' => $vital->created_at->toDateString(),
+                    'date' => $vital->updated_at->toDateString(),
                     'data' => $vital,
                 ]);
             }
@@ -109,7 +109,7 @@ class MedicalHistoryController extends Controller
 
         $vitals = Vitals::with('nurse')
             ->where('patient_id', $user->id)
-            ->orderBy('created_at', 'desc')
+            ->orderBy('updated_at', 'desc')
             ->get();
 
         $prescriptions = Prescription::with(['doctor', 'medications'])
@@ -137,7 +137,7 @@ class MedicalHistoryController extends Controller
             foreach ($vitals as $vital) {
                 $merged->push([
                     'type' => 'vital',
-                    'date' => $vital->created_at->toDateString(),
+                    'date' => $vital->updated_at->toDateString(),
                     'data' => $vital,
                 ]);
             }
@@ -179,7 +179,7 @@ class MedicalHistoryController extends Controller
 
         $vitals = Vitals::with('nurse')
             ->where('patient_id', $patient->id)
-            ->orderBy('created_at', 'desc')
+            ->orderBy('updated_at', 'desc')
             ->get();
 
         $prescriptions = Prescription::with(['doctor', 'medications'])
@@ -209,7 +209,7 @@ class MedicalHistoryController extends Controller
             foreach ($vitals as $vital) {
                 $merged->push([
                     'type' => 'vital',
-                    'date' => $vital->created_at->toDateString(),
+                    'date' => $vital->updated_at->toDateString(),
                     'data' => $vital,
                 ]);
             }

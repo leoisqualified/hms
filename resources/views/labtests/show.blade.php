@@ -9,7 +9,7 @@
             <div class="flex items-center justify-between">
                 <div>
                     <h2 class="text-xl font-semibold text-white">Lab Test Details</h2>
-                    <p class="text-blue-100 text-sm mt-1">{{ $labtest->test_name }}</p>
+                    <p class="text-blue-100 text-sm mt-1">{{ $labtest->test_type }}</p>
                 </div>
                 <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-white text-blue-800">
                     {{ ucfirst(str_replace('_', ' ', $labtest->status)) }}
@@ -29,7 +29,7 @@
                         </div>
                         <div class="ml-3">
                             <p class="text-sm font-medium text-gray-900">{{ $labtest->patient->name }}</p>
-                            <p class="text-sm text-gray-500">ID: {{ $labtest->patient->id }}</p>
+                            <p class="text-sm text-gray-500">ID: {{ $labtest->patient->patientRecord->patient_id }}</p>
                         </div>
                     </div>
                 </div>

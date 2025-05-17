@@ -81,4 +81,22 @@ class User extends Authenticatable
     {
         return $this->hasMany(Dispensation::class, 'pharmacist_id');
     }
+
+    // Doctor's lab tests
+    public function labTestsRequested()
+    {
+        return $this->hasMany(LabTest::class, 'doctor_id');
+    }
+
+    // Patient's lab tests
+    public function labTests()
+    {
+        return $this->hasMany(LabTest::class, 'patient_id');
+    }
+
+    // Lab technician's assigned tests
+    public function assignedLabTests()
+    {
+        return $this->hasMany(LabTest::class, 'lab_technician_id');
+    }
 }

@@ -11,14 +11,14 @@
                     <h2 class="text-xl font-semibold text-white">Lab Test Requests</h2>
                     <p class="text-blue-100 text-sm mt-1">{{ $labtests->count() }} {{ Str::plural('test', $labtests->count()) }} found</p>
                 </div>
-                <div>
+                {{-- <div>
                     <a href="{{ route('labtests.create') }}" class="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded-full shadow-sm text-blue-700 bg-white hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-white">
                         <svg class="-ml-0.5 mr-1.5 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
                         </svg>
                         New Request
                     </a>
-                </div>
+                </div> --}}
             </div>
         </div>
 
@@ -55,12 +55,12 @@
                                 </div>
                                 <div class="ml-4">
                                     <div class="text-sm font-medium text-gray-900">{{ $test->patient->name }}</div>
-                                    <div class="text-sm text-gray-500">ID: {{ $test->patient->id }}</div>
+                                    <div class="text-sm text-gray-500">ID: {{ $test->patient->patientRecord->patient_id }}</div>
                                 </div>
                             </div>
                         </td>
                         <td class="px-6 py-4">
-                            <div class="text-sm font-medium text-gray-900">{{ $test->test_name }}</div>
+                            <div class="text-sm font-medium text-gray-900">{{ $test->test_type }}</div>
                             <div class="text-sm text-gray-500">{{ $test->category ? ucfirst($test->category) : 'No category' }}</div>
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap">
@@ -102,7 +102,7 @@
                     @empty
                     <tr>
                         <td colspan="5" class="px-6 py-4 text-center text-sm text-gray-500">
-                            No lab tests found. <a href="{{ route('labtests.create') }}" class="text-blue-600 hover:text-blue-800">Request a new test</a>
+                            No lab tests found.
                         </td>
                     </tr>
                     @endforelse

@@ -4,7 +4,7 @@
 
 @section('content')
 @foreach($groupedByDate as $date => $records)
-    <div class="mb-12">
+    <div class="my-8">
         <div class="flex items-center mb-6">
             <div class="flex-shrink-0 bg-white border-2 border-gray-200 rounded-full p-2 mr-4">
                 <svg class="h-6 w-6 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -81,8 +81,8 @@
                                     <p class="text-base font-semibold text-gray-900">{{ $item->pulse }} bpm</p>
                                 </div>
                                 <div class="bg-green-50 p-3 rounded-md">
-                                    <p class="text-xs font-medium text-green-700">RESPIRATION</p>
-                                    <p class="text-base font-semibold text-gray-900">{{ $item->respiration }}</p>
+                                    <p class="text-xs font-medium text-green-700">Weight</p>
+                                    <p class="text-base font-semibold text-gray-900">{{ $item->weight }} kg</p>
                                 </div>
                             </div>
                         </div>

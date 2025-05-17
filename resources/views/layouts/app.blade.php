@@ -10,9 +10,12 @@
     <nav class="bg-white shadow-sm">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
             <h1 class="text-xl font-bold text-gray-900">
-                <a href="{{ route(Auth::user()->role . '.dashboard') }}">
+                <a href="{{ match(Auth::user()->role) {
+                    'labtechnician' => route('labtests.index'),
+                    default => route(Auth::user()->role . '.dashboard'),
+                } }}">
                     Hospital Management System
-                </a>
+                </a>                
             </h1>
             <div class="flex items-center space-x-4">
                 <span class="text-sm text-gray-600 hidden sm:inline">Welcome, {{ Auth::user()->name }}</span>
