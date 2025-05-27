@@ -70,6 +70,7 @@ Route::middleware(['auth', 'role:doctor'])->group(function () {
     Route::get('/medical-history/{patientId}', [MedicalHistoryController::class, 'show'])->name('medical-history.show');
     Route::get('/labtests/request/{patient}', [LabTestController::class, 'create'])->name('labtests.create');
     Route::post('/labtests/request/{patient}', [LabTestController::class, 'store'])->name('labtests.store');
+    Route::put('/doctor/prescription/{id}', [DoctorController::class, 'update'])->name('doctor.prescription.update');
 });
 
 // Pharmacist Routes

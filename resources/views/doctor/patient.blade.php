@@ -95,99 +95,112 @@
         </div>
 
 
-        <!-- Prescription Form -->
-        <div class="bg-white shadow rounded-lg overflow-hidden">
-            <div class="px-6 py-4 border-b border-gray-200 bg-gray-50">
-                <h3 class="text-lg font-medium text-gray-900 flex items-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
-                    </svg>
-                    Prescribe Medication
-                </h3>
-            </div>
-            <form action="{{ route('doctor.prescribe', $patient_id) }}" method="POST" class="px-6 py-4">
-                @csrf
-                <div class="space-y-6">
-                    <!-- Consultation Notes -->
-                    <div>
-                        <label for="notes" class="block text-sm font-medium text-gray-700">Consultation Notes</label>
-                        <div class="mt-1">
-                            <textarea id="notes" name="notes" rows="4" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border border-gray-300 rounded-md p-3" placeholder="Enter consultation notes..." required></textarea>
-                        </div>
-                    </div>
+     <!-- Prescription Form -->
+    <div class="bg-white shadow rounded-lg overflow-hidden">
+        <div class="px-6 py-4 border-b border-gray-200 bg-gray-50">
+            <h3 class="text-lg font-medium text-gray-900 flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+                </svg>
+                {{ isset($prescription) ? 'Edit Prescription' : 'Prescribe Medication' }}
+            </h3>
+        </div>
 
-                    <!-- Medications -->
-                    <div id="medications-wrapper">
-                        <h4 class="text-sm font-medium text-gray-700 mb-3">Medications</h4>
-                        
-                        <div class="medication-group space-y-4 p-4 bg-gray-50 rounded-lg">
+        <form action="{{ isset($prescription) ? route('doctor.prescription.update', $prescription->id) : route('doctor.prescribe', $patient_id) }}" method="POST" class="px-6 py-4">
+            @csrf
+            @if(isset($prescription))
+                @method('PUT')
+            @endif
+
+            <div class="space-y-6">
+                <!-- Consultation Notes -->
+                <div>
+                    <label for="notes" class="block text-sm font-medium text-gray-700">Consultation Notes</label>
+                    <div class="mt-1">
+                        <textarea id="notes" name="notes" rows="4" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border border-gray-300 rounded-md p-3" placeholder="Enter consultation notes..." required>{{ old('notes', $prescription->notes ?? '') }}</textarea>
+                    </div>
+                </div>
+
+                <!-- Medications -->
+                <div id="medications-wrapper">
+                    <h4 class="text-sm font-medium text-gray-700 mb-3">Medications</h4>
+
+                    @php
+                        $medications = old('medications', $prescription->medications ?? [ ['medication_name' => '', 'dosage' => ''] ]);
+                    @endphp
+
+                    @foreach($medications as $index => $med)
+                        <div class="medication-group space-y-4 p-4 bg-gray-50 rounded-lg mb-4">
                             <div>
-                                <label class="block text-sm font-medium text-gray-700">Medication #1</label>
+                                <label class="block text-sm font-medium text-gray-700">Medication #{{ $index + 1 }}</label>
                                 <div class="mt-1 grid grid-cols-1 sm:grid-cols-2 gap-4">
                                     <div>
-                                        <input type="text" name="medications[0][medication_name]" placeholder="Medication Name" 
-                                               class="focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-4 pr-12 py-3 sm:text-sm border-gray-300 rounded-md border"
-                                               required>
+                                        <input type="text" name="medications[{{ $index }}][medication_name]" placeholder="Medication Name"
+                                            value="{{ $med['medication_name'] ?? '' }}"
+                                            class="focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-4 pr-12 py-3 sm:text-sm border-gray-300 rounded-md border"
+                                            required>
                                     </div>
                                     <div>
-                                        <input type="text" name="medications[0][dosage]" placeholder="Dosage (e.g. 2x daily)" 
-                                               class="focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-4 pr-12 py-3 sm:text-sm border-gray-300 rounded-md border"
-                                               required>
+                                        <input type="text" name="medications[{{ $index }}][dosage]" placeholder="Dosage (e.g. 2x daily)"
+                                            value="{{ $med['dosage'] ?? '' }}"
+                                            class="focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-4 pr-12 py-3 sm:text-sm border-gray-300 rounded-md border"
+                                            required>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    @endforeach
+                </div>
 
-                    <!-- Add Medication Button -->
-                    <button type="button" onclick="addMedication()" class="inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                <!-- Add Medication Button -->
+                <button type="button" onclick="addMedication()" class="inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                    </svg>
+                    Add Another Medication
+                </button>
+
+                <!-- Submit Button -->
+                <div class="pt-4">
+                    <button type="submit" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                         </svg>
-                        Add Another Medication
+                        {{ isset($prescription) ? 'Update Prescription' : 'Complete Prescription' }}
                     </button>
-
-                    <!-- Submit Button -->
-                    <div class="pt-4">
-                        <button type="submit" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                            </svg>
-                            Complete Prescription
-                        </button>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
-<script>
-    let medIndex = 1;
-
-    function addMedication() {
-        const wrapper = document.getElementById('medications-wrapper');
-        const div = document.createElement('div');
-        div.classList.add('medication-group', 'space-y-4', 'p-4', 'bg-gray-50', 'rounded-lg', 'mt-4');
-        
-        div.innerHTML = `
-            <label class="block text-sm font-medium text-gray-700">Medication #${medIndex + 1}</label>
-            <div class="mt-1 grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                    <input type="text" name="medications[${medIndex}][medication_name]" placeholder="Medication Name" 
-                           class="focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-4 pr-12 py-3 sm:text-sm border-gray-300 rounded-md border"
-                           required>
-                </div>
-                <div>
-                    <input type="text" name="medications[${medIndex}][dosage]" placeholder="Dosage (e.g. 2x daily)" 
-                           class="focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-4 pr-12 py-3 sm:text-sm border-gray-300 rounded-md border"
-                           required>
                 </div>
             </div>
-        `;
+        </form>
+    </div>
 
-        wrapper.insertBefore(div, wrapper.lastElementChild);
-        medIndex++;
-    }
-</script>
+    <!-- Add Medication Script -->
+    <script>
+        let medicationIndex = {{ count($medications) }};
+
+        function addMedication() {
+            const wrapper = document.getElementById('medications-wrapper');
+            const newGroup = document.createElement('div');
+            newGroup.classList.add('medication-group', 'space-y-4', 'p-4', 'bg-gray-50', 'rounded-lg', 'mb-4');
+
+            newGroup.innerHTML = `
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Medication #${medicationIndex + 1}</label>
+                    <div class="mt-1 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <input type="text" name="medications[${medicationIndex}][medication_name]" placeholder="Medication Name"
+                                class="focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-4 pr-12 py-3 sm:text-sm border-gray-300 rounded-md border"
+                                required>
+                        </div>
+                        <div>
+                            <input type="text" name="medications[${medicationIndex}][dosage]" placeholder="Dosage (e.g. 2x daily)"
+                                class="focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-4 pr-12 py-3 sm:text-sm border-gray-300 rounded-md border"
+                                required>
+                        </div>
+                    </div>
+                </div>
+            `;
+            wrapper.appendChild(newGroup);
+            medicationIndex++;
+        }
+    </script>
 @endsection

@@ -6,6 +6,7 @@ use App\Models\ActivityLog;
 use App\Models\Appointment;
 use App\Models\DoctorSchedule;
 use App\Models\Patient;
+use App\Models\Prescription;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -43,7 +44,7 @@ class DoctorController extends Controller
         $request->validate([
             'notes' => 'required|string',
             'medications' => 'required|array',
-            'medications.*.medication_name' => 'required|string',  // Fix: medication_name instead of name
+            'medications.*.medication_name' => 'required|string',
             'medications.*.dosage' => 'required|string',
         ]);
 
@@ -90,17 +91,14 @@ class DoctorController extends Controller
         return view('doctor.schedules', compact('schedules'));
     }
     
-    // public function showMedicalHistory($patientId)
-    // {
-    //     $patientRecord = Patient::where('patient_id', $patientId)->firstOrFail();
-    //     $patient = $patientRecord->user;
+    public function update(Request $request, $id)
+    {
+        $prescription = Prescription::findOrFail($id);
+        $prescription->notes = $request->input('notes');
+        $prescription->medications = $request->input('medications'); // handle appropriately if it's JSON
+        $prescription->save();
 
-    //     // This assumes a `medicalHistories()` relationship exists on the User or Patient model.
-    //     $medicalHistories = $patient->medicalHistories()->latest()->get();
+        return redirect()->back()->with('success', 'Prescription updated successfully.');
+    }
 
-    //     return view('doctor.medical-history', [
-    //         'patient' => $patient,
-    //         'medicalHistories' => $medicalHistories,
-    //     ]);
-    // }
 }
