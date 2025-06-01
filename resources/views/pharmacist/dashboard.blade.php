@@ -65,7 +65,7 @@
                 </div>
             </div>
 
-            <!-- View Medical History Card -->
+            {{-- <!-- View Medical History Card -->
             <div class="bg-white rounded-xl shadow-md overflow-hidden border border-gray-100 hover:shadow-lg transition-shadow duration-300">
                 <div class="p-6">
                     <div class="flex items-center mb-4">
@@ -86,7 +86,7 @@
                         </button>
                     </form>
                 </div>
-            </div>
+            </div> --}}
 
 
             <!-- Quick Actions -->

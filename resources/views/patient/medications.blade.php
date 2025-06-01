@@ -126,7 +126,7 @@
                     </table>
 
                     @if ($medications->where('is_paid', false)->count() > 0)
-                        <form action="{{ route('payment.checkout.bulk') }}" method="POST" class="mt-6 text-right">
+                        <form action="{{ route('payment.checkout.bulk') }}" method="POST" class="mx-6 my-6 text-right">
                             @csrf
                             <input type="hidden" name="total_amount" value="{{ $totalPrice }}">
                             <input type="hidden" name="med_ids" value="{{ $medications->pluck('id')->join(',') }}">
